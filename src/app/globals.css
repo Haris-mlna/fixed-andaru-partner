@@ -2,32 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* Outfit */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+/* Montserrat */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/*Inter */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@layer base {
+	html {
+		font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont,
+			"Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+			"Helvetica Neue", sans-serif;
+	}
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+:root {
+	--color-primary: #0a1d3a;
+	--color-blue: #0d6efd;
+
+	/* Dark Mode Gradient Layers */
+	--layer-1-dark: #222222;
+	--layer-2-dark: #333333;
+	--layer-3-dark: #444444;
+	--layer-4-dark: #555555;
+	--layer-5-dark: #666666;
+
+	/* Light Mode Gradient Layers */
+	--layer-1-light: #f0f0f0;
+	--layer-2-light: #e0e0e0;
+	--layer-3-light: #d0d0d0;
+	--layer-4-light: #c0c0c0;
+	--layer-5-light: #b0b0b0;
+	--layer-white: #fff;
+
+	--font-outfit: "Outfit", arial, sans-serif;
+	--font-montserrat: "Montserrat", arial, sans-serif;
+	--font-inter: "Inter", arial, sans-serif;
+}
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+	margin: 0;
+	background-color: var(--layer-1-light);
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+*::-webkit-scrollbar-track {
+	background-color: #f5f5f5;
+}
+
+*::-webkit-scrollbar {
+	width: 4px;
+	background-color: #f5f5f5;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color:	var(--color-blue);
+	border-radius: 4px;
 }

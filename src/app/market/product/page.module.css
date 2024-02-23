@@ -1,0 +1,7 @@
+.button:hover > .text {
+  transform: translateY(3px);
+}
+
+.text {
+  transition: 150ms ease-in-out;
+}
