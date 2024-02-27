@@ -104,7 +104,7 @@ const Product = () => {
 		console.log(body);
 
 		try {
-			const res = await actionCart(body)
+			const res = await actionCart(body);
 			if (res) {
 				Swal.fire({
 					title: "Pesanan Sukses!",
@@ -124,7 +124,7 @@ const Product = () => {
 					},
 					willClose: () => {
 						clearInterval(timerInterval);
-						router.push("cart");
+						router.push("/cart");
 					},
 				}).then(result => {
 					/* Read more about handling dismissals below */
@@ -230,35 +230,42 @@ const Product = () => {
 							</p>
 							<div>
 								{productDetail ? (
-									<Box sx={{ minWidth: 120 }}>
-										<FormControl fullWidth>
-											<InputLabel
-												id='simple-select-label'
-												sx={{
-													fontFamily: "var(--font-outfit)",
-												}}>
-												Pilih per kuantitas
-											</InputLabel>
-											<Select
-												labelId='simple-select-label'
-												id='demo-simple-select'
-												label='Pilih per kuantitas'
-												value={selectedUOM}
-												onChange={handleChangeUom}>
-												<MenuItem value={productDetail.UomId1}>
-													{productDetail.UomLabel1}
-												</MenuItem>
-											</Select>
-										</FormControl>
-									</Box>
+									<>
+										<p className=' mb-2 text-sm text-slate-400'>
+											Pilih perkuantitas :
+										</p>
+										<Box sx={{ minWidth: 120 }}>
+											<FormControl fullWidth size='small'>
+												<InputLabel
+													id='simple-select-label'
+													sx={{
+														fontFamily: "var(--font-outfit)",
+													}}>
+													Per kuantitas.
+												</InputLabel>
+												<Select
+													labelId='simple-select-label'
+													id='demo-simple-select'
+													label='Per kuantitas.'
+													value={selectedUOM}
+													onChange={handleChangeUom}
+													sx={{
+														fontSize: 16,
+														fontFamily: "var(--font-outfit)",
+													}}>
+													<MenuItem value={productDetail.UomId1}>
+														{productDetail.UomLabel1}
+													</MenuItem>
+												</Select>
+											</FormControl>
+										</Box>
+									</>
 								) : (
 									""
 								)}
 							</div>
 							<div>
-								<label
-									htmlFor='quantity-1'
-									className='text-sm text-neutral-500'>
+								<label htmlFor='quantity-1' className='text-sm text-slate-400'>
 									Masukan Kuantitas
 								</label>
 								<div className='flex w-full gap-1'>
@@ -296,7 +303,7 @@ const Product = () => {
 							</div>
 						</div>
 						<button
-							className={`w-full h-12 disabled:bg-neutral-500 cursor-pointer bg-blue-500 rounded text-white ${animate.button}`}
+							className={`w-full h-12 disabled:bg-slate-400 cursor-pointer bg-blue-500 rounded text-white ${animate.button}`}
 							onClick={handleOrder}
 							disabled={!(quantity > 0 && selectedUOM)}>
 							<p className={animate.text}>Masukan Keranjang</p>

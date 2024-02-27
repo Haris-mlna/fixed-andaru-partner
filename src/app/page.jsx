@@ -11,6 +11,7 @@ import { CircularProgress } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useUser } from "@/context/user/user-context";
+import Swal from "sweetalert2";
 
 const Landing = () => {
 	const { setUser, user } = useUser();
@@ -57,7 +58,19 @@ const Landing = () => {
 			setUser,
 			setMessages,
 			navigate,
-		}); // Pass props as an object
+		}).then(res => {
+			if (res === "ok") {
+				Swal.fire({
+					title: "Login Success!",
+					icon: "success",
+					text: "Selamat datang di bisnis partner!",
+					width: 350,
+					timerProgressBar: true,
+					timer: 2000,
+					showConfirmButton: false,
+				});
+			}
+		});
 	};
 
 	const handleInput = (e, setValue) => {

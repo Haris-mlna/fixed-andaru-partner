@@ -15,6 +15,7 @@ import { ButtonNavigation } from "@/components/ui/button/button";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/user/user-context";
 import { useSidebar } from "@/context/sidebar/sidebar-context";
+import { Tooltip } from "@mui/material";
 
 const Sidebar = props => {
 	const { userData } = useUser();
@@ -31,7 +32,7 @@ const Sidebar = props => {
 	};
 
 	return (
-		<div className='relative bg-red-500 flex'>
+		<div className='relative bg-red-500 flex z-50'>
 			<motion.div
 				initial={false}
 				animate={{ width: open ? 320 : 80 }}
@@ -53,7 +54,7 @@ const Sidebar = props => {
 						transition={{ duration: 0.3, delay: 0.3 }}
 						className={`${open ? "w-full h-12" : "hidden"}`}>
 						<Image
-							src={open ? logo : logo_only}
+							src={logo}
 							className={open ? " w-40" : "hidden"}
 							alt='logo-andaru'
 						/>
@@ -66,9 +67,10 @@ const Sidebar = props => {
 							open ? "hidden" : "w-full h-12 flex justify-center items-center"
 						}`}>
 						<Image
-							src={open ? logo : logo_only}
-							className={open ? "hidden" : "w-14"}
+							src={logo_only}
+							className={open ? "hidden" : "size-12"}
 							alt='logo-andaru'
+							priority
 						/>
 					</motion.div>
 
@@ -84,20 +86,19 @@ const Sidebar = props => {
 						style={{
 							outline: "none",
 							color: open ? "#0d6efd" : "#0d6efd",
-							backgroundColor: open
-								? "var(--layer-white)"
-								: "var(--layer-white)",
 						}}
 						onClick={() => {
 							toggleOpen();
-						}}>
-						<FontAwesomeIcon icon={faAngleDoubleLeft} className='' />
+						}}
+						className=' bg-white bg-opacity-70 z-50'>
+						<FontAwesomeIcon width={14} icon={faAngleDoubleLeft} className='' />
 					</motion.button>
 				</motion.div>
 
 				<UserCard userData={userData} open={open} />
 
 				<div className='flex flex-col gap-2'>
+					{/* NAVIGASI LIST */}
 					<div className=' border-b border-slate-200 text-slate-400'>
 						<label htmlFor='navigation' className='text-xs '>
 							Navigasi
@@ -126,15 +127,29 @@ const Sidebar = props => {
 								) : (
 									<div></div>
 								)}
-								<div className='w-14'>
-									<FontAwesomeIcon
-										className=' text-slate-400'
-										icon={item.icons}
-									/>
-								</div>{" "}
+								<Tooltip
+									title={
+										<p
+											style={{
+												fontFamily: "var(--font-outfit)",
+											}}>
+											{item.name}
+										</p>
+									}
+									placement='right'>
+									<div className='w-14'>
+										<FontAwesomeIcon
+											width={14}
+											className=' text-slate-400'
+											icon={item.icons}
+										/>
+									</div>
+								</Tooltip>
 							</ButtonNavigation>
 						))}
 					</div>
+
+					{/* AKUN LIST */}
 
 					<div className=' border-b border-slate-200 text-slate-400'>
 						<label htmlFor='navigation' className='text-xs '>
@@ -164,15 +179,29 @@ const Sidebar = props => {
 								) : (
 									<div></div>
 								)}
-								<div className='w-14'>
-									<FontAwesomeIcon
-										className=' text-slate-400'
-										icon={item.icons}
-									/>
-								</div>{" "}
+								<Tooltip
+									title={
+										<p
+											style={{
+												fontFamily: "var(--font-outfit)",
+											}}>
+											{item.name}
+										</p>
+									}
+									placement='right'>
+									<div className='w-14'>
+										<FontAwesomeIcon
+											width={14}
+											className=' text-slate-400'
+											icon={item.icons}
+										/>
+									</div>
+								</Tooltip>
 							</ButtonNavigation>
 						))}
 					</div>
+
+					{/* PENGATURAN LIST */}
 
 					<div className=' border-b border-slate-200 text-slate-400'>
 						<label htmlFor='navigation' className='text-xs '>
@@ -202,12 +231,24 @@ const Sidebar = props => {
 								) : (
 									<div></div>
 								)}
-								<div className='w-14'>
-									<FontAwesomeIcon
-										className=' text-slate-400'
-										icon={item.icons}
-									/>
-								</div>{" "}
+								<Tooltip
+									title={
+										<p
+											style={{
+												fontFamily: "var(--font-outfit)",
+											}}>
+											{item.name}
+										</p>
+									}
+									placement='right'>
+									<div className='w-14'>
+										<FontAwesomeIcon
+											width={14}
+											className=' text-slate-400'
+											icon={item.icons}
+										/>
+									</div>
+								</Tooltip>
 							</ButtonNavigation>
 						))}
 					</div>
@@ -226,7 +267,9 @@ const Sidebar = props => {
 						) : (
 							<div></div>
 						)}
-						<FontAwesomeIcon className='w-14' icon={faPowerOff} />
+						<div className='w-14'>
+							<FontAwesomeIcon width={14} icon={faPowerOff} />
+						</div>
 					</button>
 				</div>
 			</motion.div>

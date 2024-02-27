@@ -10,7 +10,7 @@ export const getFeeds = async (user, page) => {
 			{
 				propertyName: "AudiencesId",
 				operator: "=",
-				value: user?.OrganizationId || decodedToken.OrganizationId,
+				value: user?.OrganizationId,
 			},
 		],
 		sortList: ["PublishedDate desc"],

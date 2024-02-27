@@ -2,14 +2,7 @@ import AuthServices from "@/utils/controller/auth";
 import { jwtDecode } from "jwt-decode";
 
 export const handleLogin = async props => {
-	const {
-		email,
-		password,
-		setLoading,
-		setUser,
-		setMessages,
-		navigate,
-	} = props;
+	const { email, password, setLoading, setUser, setMessages, navigate } = props;
 
 	const atIndex = email.indexOf("@");
 	if (email && password) {
@@ -35,27 +28,28 @@ export const handleLogin = async props => {
 
 				if (res !== undefined) {
 					navigate.push("/home");
-					setMessages(null)
-				}
+					setMessages(null);
 
+					return "ok";
+				}
 			} catch (error) {
 				setMessages({
-					text : 'Username dan password salah!',
-					error : 'danger'
-				})
+					text: "Username dan password salah!",
+					error: "danger",
+				});
 			} finally {
 				setLoading(false);
 			}
 		} else {
 			setMessages({
-				text : 'Username tidak valid!',
-				error : 'warning'
-			})
+				text: "Username tidak valid!",
+				error: "warning",
+			});
 		}
 	} else {
 		setMessages({
-			text : 'Isi email dan password dengan benar!',
-			error : 'warning'
-		})
+			text: "Isi email dan password dengan benar!",
+			error: "warning",
+		});
 	}
 };

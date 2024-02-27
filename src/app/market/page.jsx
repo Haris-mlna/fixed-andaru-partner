@@ -20,6 +20,7 @@ const Market = () => {
 	const { open } = useSidebar();
 	const { user } = useUser();
 	const [pages, setPages] = React.useState(1);
+	const [totalpages, setTotalPages] = React.useState(1);
 	const [loading, setLoading] = React.useState(false);
 
 	const fetchProduct = async () => {
@@ -29,7 +30,8 @@ const Market = () => {
 
 			if (res) {
 				console.log(res);
-				await setProduct(res.data);
+				setProduct(res.data);
+				setTotalPages(Math.ceil(res.totalRows / 15));
 			}
 		} catch (error) {
 			console.log("error");
@@ -42,19 +44,23 @@ const Market = () => {
 		if (user) {
 			fetchProduct();
 		}
-	}, [user]);
+	}, [user, pages]);
 
 	const handleSelect = item => {
 		setProductDetail(item);
 		router.push("/market/product");
 	};
 
+	const handlePageChange = (event, value) => {
+		setPages(value);
+	};
+
 	return (
 		<div className='flex w-full h-screen overflow-hidden'>
 			<ButtonMessage />
 			<Sidebar />
-			<div className='flex w-full h-full flex-col gap-1 overflow-y-auto'>
-				<div className='w-full h-20 bg-white flex items-center justify-end px-4 flex-shrink-0'>
+			<div className='flex w-full h-full flex-col overflow-y-auto'>
+				<div className='w-full h-20 bg-white flex items-center justify-end px-4 flex-shrink-0 shadow z-20'>
 					<motion.h1
 						initial={{
 							opacity: 0,
@@ -68,8 +74,8 @@ const Market = () => {
 						KATALOG PRODUK
 					</motion.h1>
 				</div>
-				<div className='w-full flex flex-col gap-1 bg-white'>
-					<header className='w-full h-96 flex flex-shrink-0 relative justify-center items-center bg-gradient-to-br from-sky-50 to-indigo-50'>
+				<div className='w-full flex flex-col bg-white'>
+					<header className='w-full h-96 flex flex-col flex-shrink-0 shadow z-10 relative justify-center items-center bg-gradient-to-br from-sky-50 to-indigo-50'>
 						<Image
 							src={blob}
 							width={4000}
@@ -78,13 +84,28 @@ const Market = () => {
 							className='object-cover w-full h-full absolute opacity-40'
 							priority
 						/>
-						<h1 className='text-center text-black font-black text-4xl z-10'>
+						<div className=' p-4 z-10 mb-4 bg-white rounded shadow'>
+							<motion.h1 className='text-2xl text font-bold tracking-wide bg-gradient-to-br from-sky-500 to-black text-transparent bg-clip-text'>
+								MANFAATKAN KESEMPATAN BELANJA DI BISNIS PARTNER!
+								<br />
+							</motion.h1>
+							<span className='text-5xl font-black text-neutral-700 '>
+								DAPATKAN <span className="">PROMONYA !!!!</span>
+							</span>
+						</div>
+						<h1 className='text-center text-black font-black text-3xl z-10'>
 							#BERSAMA<span className='text-red-500'>PASTI</span>
 							<br />#<span className='text-red-500'>PASTI</span>SUKSES!
 						</h1>
 					</header>
-					<section className='w-full bg-white min-h-screen flex flex-col items-center py-4'>
-						<Pagination shape='rounded' count={10} size='small' />
+					<FilterMarket />
+					<section className='w-full bg-white min-h-screen flex flex-col py-4 px-2 overflow-x-hidden'>
+						<Pagination
+							shape='rounded'
+							count={totalpages}
+							onChange={handlePageChange}
+							size='small'
+						/>
 						{loading ? (
 							"loading"
 						) : (
@@ -93,7 +114,7 @@ const Market = () => {
               grid py-4 gap-2 grid-cols-2 sm:grid-cols-2 ${
 								open ? "md:grid-cols-2" : " md:grid-cols-3"
 							} ${open ? "lg:grid-cols-4" : "lg:grid-cols-5"} ${
-									open ? "2xl:grid-cols-5" : "2xl:grid-cols-6"
+									open ? "2xl:grid-cols-6" : "2xl:grid-cols-7"
 								}
                  gap-y-4
               `}>
@@ -107,7 +128,7 @@ const Market = () => {
 										onClick={() => {
 											handleSelect(item);
 										}}
-										className='w-52 min-h-80 flex flex-col p-2 rounded'>
+										className=' w-48 min-h-80 flex flex-col rounded'>
 										<div className='w-full h-64 bg-slate-300 rounded '></div>
 										<div>
 											<p className='font-bold text-sm text-justify'>
