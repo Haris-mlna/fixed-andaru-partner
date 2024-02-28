@@ -8,6 +8,7 @@ import layeredwave from "@/assets/background/layered-wave.svg";
 import Image from "next/image";
 import { useUser } from "@/context/user/user-context";
 import {
+	actionCheckout,
 	loadAddress,
 	loadCart,
 	loadCartId,
@@ -35,18 +36,21 @@ import { TiArrowBackOutline } from "react-icons/ti";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
+import moment from "moment";
 
 const Cart = () => {
 	const { user } = useUser();
 
 	// Data
 	const [cart, setCart] = React.useState([]);
+	const [cartId, setCartId] = React.useState()
 	const [customer, setCustomer] = React.useState([]);
 	const [customerAddress, setCustomerAddress] = React.useState([]);
 
 	//Select
 	const [selectedCustomer, setSelectedCustomer] = React.useState("");
 	const [selectedAddress, setSelectedAddress] = React.useState("");
+	const [selectedDelivery, setSelectedDelivery] = React.useState(dayjs())
 
 	// Loading State
 	const [loading, setLoading] = React.useState(false);
@@ -63,6 +67,10 @@ const Cart = () => {
 			setLoading(true);
 
 			const res = await loadCartId(user.OrganizationId);
+
+			if (res) {
+				setCartId(res)
+			}
 		} catch (error) {
 			Swal.fire({
 				title: "Error!",
@@ -192,6 +200,31 @@ const Cart = () => {
 		width: 1,
 	});
 
+	const handleCheckout = async () => {
+		const body = {
+			SupplierId: cartId.SupplierId,
+			OrderCartId: cartId.Id,
+			DeliveryAddressId: selectedAddress,
+			ExpectedDeliveryDate: selectedDelivery,
+			Notes: notes !== "" ? notes : null,
+		};
+
+		console.log(body)
+
+		// try {
+		// 	const res = await actionCheckout(body)
+		// } catch (error) {
+
+		// }
+	}
+
+	const handleChangeAddress = (date) => {
+		if (date.$d) {
+			const formatedDate = moment(date.$d).format()
+			setSelectedDelivery(formatedDate)
+		}
+	}
+
 	return (
 		<div className='w-full h-screen flex'>
 			<Sidebar />
@@ -261,7 +294,7 @@ const Cart = () => {
 											<>
 												<div className='flex flex-col gap-1'>
 													<p className='text-sm text-slate-400'>
-														Informasi tambahan :
+														Informasi tambahan (optional) :
 													</p>
 													<TextField
 														id='standard-basic'
@@ -378,11 +411,11 @@ const Cart = () => {
 																	zIndex: 10,
 																}}>
 																{customerAddress.length > 0 ? (
-																	<>
-																		<MenuItem value=''>
+																	[
+																		<MenuItem key="none" value=''>
 																			<em>None</em>
-																		</MenuItem>
-																		{customerAddress.map((item, index) => (
+																		</MenuItem>,
+																		...customerAddress.map((item, index) => (
 																			<MenuItem
 																				key={index}
 																				value={`${item.Id}`}
@@ -391,10 +424,10 @@ const Cart = () => {
 																				}}>
 																				{item.Address}
 																			</MenuItem>
-																		))}
-																	</>
+																		))
+																	]
 																) : (
-																	<MenuItem value={""}>
+																	<MenuItem key="placeholder" value={""}>
 																		Pilih customer untuk menampilkan alamat
 																	</MenuItem>
 																)}
@@ -424,7 +457,7 @@ const Cart = () => {
 																slotProps={{
 																	field: {
 																		clearable: true,
-																		onClear: () => setCleared(true),
+																		onClear: () => { setCleared(true); setSelectedDelivery(null) },
 																	},
 																	textField: {
 																		size: "small",
@@ -433,6 +466,7 @@ const Cart = () => {
 																		},
 																	},
 																}}
+																onChange={handleChangeAddress}
 																sx={{
 																	fontFamily: "var(--font-outfit)",
 																}}
@@ -483,10 +517,8 @@ const Cart = () => {
 												"linear-gradient(108.32deg, #62CDCB 24.88%, #4599DB 78.49%)",
 										}}
 										className={`w-full h-full max-h-20 rounded text-white ${styles.primary_button}`}
-										onClick={() => {
-											console.log(cart)
-										}}
-										>
+										onClick={handleCheckout}
+									>
 										<div
 											className={`z-10 text-white ${styles.text} transition-all duration-150`}>
 											Checkout Sekarang!

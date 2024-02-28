@@ -1,3 +1,4 @@
+import { Client } from "@/utils/api/api";
 import { getList, getSingle } from "@/utils/controller/get";
 
 export const loadCartId = async customerId => {
@@ -134,5 +135,22 @@ export const loadAddress = async param => {
 	} catch (err) {
 		console.error("Error searching address:", err);
 		throw err;
+	}
+};
+
+export const actionCheckout = async (param) => {
+	try {
+		const body = {
+			actionController: "OrdersController",
+			actionName: "CheckoutPurchaseOrder",
+			actionParam: param,
+		};
+
+		const res = Client.post('/action', body)
+
+		return res;
+	} catch (error) {
+		console.error(error);
+		throw error;
 	}
 };

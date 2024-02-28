@@ -18,14 +18,14 @@ export const CartList = (props, key) => {
 						<p className='text-xs m-0 p-0'>
 							{data.TypeName}, {data.SpecName}
 						</p>
-						<p className='text-xs m-0 p-0'>{data.SizeName}"</p>
+						<p className='text-xs m-0 p-0'>{data.SizeName}&quot;</p>
 					</div>
 					<div className=''>
 						<p className="text-sm font-light">{moment(data.InsertStamp).fromNow()}</p>
 					</div>
 				</div>
 			</div>
-			<div className='absolute right-0 min-w-20 pl-1 py-1 top-2 text-xs bg-blue-500 text-white rounded-l-sm'>
+			<div className='absolute min-w-20 pl-1 py-1 top-2 right-2 text-xs bg-blue-500 text-white flex justify-center items-center rounded-full'>
 				{data.QuantityUom1} {data.Uom1Label}
 			</div>
 		</li>

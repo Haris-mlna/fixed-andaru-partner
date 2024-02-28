@@ -138,7 +138,7 @@ const Market = () => {
 												{item.ManufactureName}
 											</p>
 											<p className='text-left text-xs'>
-												{item.TypeName}, {item.SpecificationName}, {item.Size}"
+											{item.TypeName}, {item.SpecificationName}, {item.Size}&quot;
 											</p>
 										</div>
 										{/* <div className='w-full flex'>

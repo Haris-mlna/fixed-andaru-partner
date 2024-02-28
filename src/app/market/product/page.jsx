@@ -214,7 +214,7 @@ const Product = () => {
 						</p>
 						<p>
 							<b>Ukuran : </b>
-							{productDetail?.Size}"
+							{productDetail?.Size}&quot;
 						</p>
 					</div>
 
@@ -343,7 +343,7 @@ const Product = () => {
 											<p className='text-sm text-left'>
 												{item?.TypeName}, {item?.SpecificationName}
 											</p>
-											<p className='text-sm text-left'>{item?.Size}"</p>
+											<p className='text-sm text-left'>{item?.Size}&quot;</p>
 										</div>
 									</button>
 								))
