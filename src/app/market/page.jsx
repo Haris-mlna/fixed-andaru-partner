@@ -13,6 +13,7 @@ import { getListProduct } from "./page.service";
 import { useUser } from "@/context/user/user-context";
 import { useRouter } from "next/navigation";
 import { useSidebar } from "@/context/sidebar/sidebar-context";
+import SkeletonProduct from "@/components/skeleton/product/product-skeleton";
 
 const Market = () => {
 	const router = useRouter();
@@ -90,7 +91,7 @@ const Market = () => {
 								<br />
 							</motion.h1>
 							<span className='text-5xl font-black text-neutral-700 '>
-								DAPATKAN <span className="">PROMONYA !!!!</span>
+								DAPATKAN <span className=''>PROMONYA !!!!</span>
 							</span>
 						</div>
 						<h1 className='text-center text-black font-black text-3xl z-10'>
@@ -107,13 +108,13 @@ const Market = () => {
 							size='small'
 						/>
 						{loading ? (
-							"loading"
+							<SkeletonProduct />
 						) : (
 							<div
 								className={`
               grid py-4 gap-2 grid-cols-2 sm:grid-cols-2 ${
 								open ? "md:grid-cols-2" : " md:grid-cols-3"
-							} ${open ? "lg:grid-cols-4" : "lg:grid-cols-5"} ${
+							} ${open ? "lg:grid-cols-3" : "lg:grid-cols-4"} ${
 									open ? "2xl:grid-cols-6" : "2xl:grid-cols-7"
 								}
                  gap-y-4
@@ -138,7 +139,8 @@ const Market = () => {
 												{item.ManufactureName}
 											</p>
 											<p className='text-left text-xs'>
-											{item.TypeName}, {item.SpecificationName}, {item.Size}&quot;
+												{item.TypeName}, {item.SpecificationName}, {item.Size}
+												&quot;
 											</p>
 										</div>
 										{/* <div className='w-full flex'>

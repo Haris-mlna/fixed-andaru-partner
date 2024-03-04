@@ -83,22 +83,6 @@ const Landing = () => {
 		<div className='w-full relative overflow-hidden h-screen max-h-screen flex items-center justify-center flex-col gap-1 bg-gradient-to-br from-primary to-slate-950'>
 			<motion.div
 				initial={{
-					translateX: -40,
-					opacity: 0,
-				}}
-				animate={{
-					translateX: 0,
-					opacity: 1,
-				}}
-				transition={{
-					duration: 0.3,
-					delay: 0.6,
-				}}
-				className=' w-full flex justify-center py-2 text-2xl text-white'>
-				LOGIN
-			</motion.div>
-			<motion.div
-				initial={{
 					translateY: 40,
 					opacity: 0,
 				}}

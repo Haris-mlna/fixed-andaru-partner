@@ -37,7 +37,7 @@ const Sidebar = props => {
 				initial={false}
 				animate={{ width: open ? 320 : 80 }}
 				transition={{ duration: 0.3 }}
-				className={`flex flex-col p-2 bg-white min-h-screen border-r border-slate-200 shadow-lg gap-2 z-20`}>
+				className={`flex flex-col p-2 bg-white min-h-screen border-r max-xl:max-w-60 border-slate-200 shadow-lg gap-2 z-20`}>
 				<motion.div
 					animate={{
 						display: "flex",
@@ -90,7 +90,7 @@ const Sidebar = props => {
 						onClick={() => {
 							toggleOpen();
 						}}
-						className=' bg-white bg-opacity-70 z-50'>
+						className=' bg-white bg-opacity-70 z-50 '>
 						<FontAwesomeIcon width={14} icon={faAngleDoubleLeft} className='' />
 					</motion.button>
 				</motion.div>
@@ -107,7 +107,7 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.navigation.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100" : ""}
+								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
 								key={item.name}
 								onClick={() => {
 									handleNavigate(item.link);
@@ -121,7 +121,7 @@ const Sidebar = props => {
 											open ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
 										}
 										transition={{ duration: 0.3, delay: 0.3 + index * 0.2 }}
-										className=' text-slate-500'>
+										className=' text-slate-500 text-xs'>
 										{item.name}
 									</motion.div>
 								) : (
@@ -140,7 +140,7 @@ const Sidebar = props => {
 									<div className='w-14'>
 										<FontAwesomeIcon
 											width={14}
-											className=' text-slate-400'
+											className=' text-slate-400 max-xl:text-xs'
 											icon={item.icons}
 										/>
 									</div>
@@ -159,7 +159,7 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.account.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100" : ""}
+								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
 								key={item.name}
 								onClick={() => {
 									handleNavigate(item.link);
@@ -173,7 +173,7 @@ const Sidebar = props => {
 											open ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
 										}
 										transition={{ duration: 0.3, delay: 0.3 + index * 0.2 }}
-										className=' text-slate-500'>
+										className=' text-slate-500 text-xs'>
 										{item.name}
 									</motion.div>
 								) : (
@@ -192,7 +192,7 @@ const Sidebar = props => {
 									<div className='w-14'>
 										<FontAwesomeIcon
 											width={14}
-											className=' text-slate-400'
+											className=' text-slate-400 max-xl:text-xs'
 											icon={item.icons}
 										/>
 									</div>
@@ -211,7 +211,7 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.settings.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100" : ""}
+								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
 								onClick={() => {
 									handleNavigate(item.link);
 								}}
@@ -225,7 +225,7 @@ const Sidebar = props => {
 											open ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }
 										}
 										transition={{ duration: 0.3, delay: 0.3 + index * 0.2 }}
-										className=' text-slate-500'>
+										className=' text-slate-500 text-xs'>
 										{item.name}
 									</motion.div>
 								) : (
@@ -244,7 +244,7 @@ const Sidebar = props => {
 									<div className='w-14'>
 										<FontAwesomeIcon
 											width={14}
-											className=' text-slate-400'
+											className=' text-slate-400 max-xl:text-xs'
 											icon={item.icons}
 										/>
 									</div>

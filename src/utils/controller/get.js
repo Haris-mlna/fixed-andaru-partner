@@ -13,7 +13,7 @@ const getList = async (props, link) => {
 	try {
 		const {
 			modelName,
-			fieldName,
+			fieldNames,
 			maximumResult,
 			pageNumber,
 			criteriaList,
@@ -22,7 +22,7 @@ const getList = async (props, link) => {
 
 		const body = {
 			modelName,
-			...(fieldName !== undefined && { fieldName }),
+			...(fieldNames !== undefined && { fieldNames }),
 			...(maximumResult !== undefined && { maximumResult }),
 			...(pageNumber !== undefined && { pageNumber }),
 			...(criteriaList !== undefined && { criteriaList }),
