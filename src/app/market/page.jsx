@@ -110,15 +110,7 @@ const Market = () => {
 						{loading ? (
 							<SkeletonProduct />
 						) : (
-							<div
-								className={`
-              grid py-4 gap-2 grid-cols-2 sm:grid-cols-2 ${
-								open ? "md:grid-cols-2" : " md:grid-cols-3"
-							} ${open ? "lg:grid-cols-3" : "lg:grid-cols-4"} ${
-									open ? "2xl:grid-cols-6" : "2xl:grid-cols-7"
-								}
-                 gap-y-4
-              `}>
+							<div className='flex flex-wrap gap-2 mt-2'>
 								{product.map((item, index) => (
 									<motion.button
 										key={index}
