@@ -4,7 +4,7 @@ import * as React from "react";
 import Sidebar from "@/components/layout/sidebar/sidebar";
 import ProgressBar from "@/components/ui/progressbar/progressbar";
 import { FaTruckFast } from "react-icons/fa6";
-import { getDeliveryList } from "./page.service";
+import { getDeliveryDetail, getDeliveryList } from "./page.service";
 import EnhancedTable from "@/components/ui/table/table";
 import { configTableDelivery } from "@/config/config-table-delivery";
 
@@ -57,6 +57,22 @@ const Delivery = () => {
 		}
 	}, [sort]);
 
+	const handleDeliveryDetail = async id => {
+		try {
+			setLoading(true);
+
+			const res = await getDeliveryDetail(id);
+
+			if (res) {
+				console.log(res);
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<div className='w-full flex h-screen overflow-hidden'>
 			<Sidebar />
@@ -97,6 +113,7 @@ const Delivery = () => {
 								setRowsPerPage={setRowsPerPage}
 								loading={loading}
 								maximum={maximum}
+								handleDeliveryDetail={handleDeliveryDetail}
 							/>
 						)}
 					</div>

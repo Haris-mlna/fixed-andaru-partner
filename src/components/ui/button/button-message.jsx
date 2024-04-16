@@ -22,6 +22,7 @@ const ButtonMessage = () => {
 				open ? "bg-white text-blue-500" : "text-white bg-blue-500"
 			}`}>
 			<FontAwesomeIcon icon={faMessage} />
+			{open ? <p>Fitur belum tersedia</p> : null}
 		</motion.button>
 	);
 };

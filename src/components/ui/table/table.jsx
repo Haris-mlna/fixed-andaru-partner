@@ -183,6 +183,7 @@ export default function EnhancedTable({
 	setRowsPerPage,
 	loading,
 	maximum,
+	handleDeliveryDetail
 }) {
 	const [order, setOrder] = React.useState("desc");
 	const [orderBy, setOrderBy] = React.useState("DueDate");
@@ -265,6 +266,9 @@ export default function EnhancedTable({
 										sx={{ cursor: "pointer" }}>
 										{head.map(headCell => (
 											<TableCell
+											onClick={() => {
+												handleDeliveryDetail(row.Id)
+											}}
 												key={headCell.id}
 												align={headCell.numeric ? "right" : "left"}
 												// Applying styles to the TableCell rendering the address
