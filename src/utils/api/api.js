@@ -24,7 +24,7 @@ const ClientAuth = {
 			});
 			return response;
 		} catch (error) {
-			console.error(error);
+			throw new Error("internal server error");
 		}
 	},
 };
@@ -49,9 +49,10 @@ const Client = {
 		try {
 			const apiUser = window.localStorage.getItem("apiURL");
 			const token = window.localStorage.getItem("token");
+			const apiNew = "http://103.195.30.148/api/main";
 
-			if (apiUser !== null && token !== null) {
-				const response = await fetch(apiUser + url, {
+			if (token !== null) {
+				const response = await fetch(apiNew + url, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",

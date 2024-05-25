@@ -19,6 +19,7 @@ import { FaTruckLoading } from "react-icons/fa";
 import { LuPackageCheck } from "react-icons/lu";
 import { FaTruckFast } from "react-icons/fa6";
 import { IoCheckmark } from "react-icons/io5";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
 	[`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -71,10 +72,11 @@ function ColorlibStepIcon(props) {
 	const { active, completed, className } = props;
 
 	const icons = {
-		1: <LuPackageCheck size={24}/>,
-		2: <FaTruckLoading size={24}/>,
-		3: <FaTruckFast size={24}/>,
-		4: <IoCheckmark size={24}/>,
+		1: <LuPackageCheck size={24} />,
+		2: <FaTruckLoading size={24} />,
+		3: <FaTruckFast size={24} />,
+		4: <IoCheckmark size={24} />,
+		5: <CancelIcon size={24} />,
 	};
 
 	return (
@@ -104,14 +106,34 @@ ColorlibStepIcon.propTypes = {
 	icon: PropTypes.node,
 };
 
-const steps = ["Draft", "Packaging", "On The Way", "Done"];
+const steps = ["Draft", "Packaging", "On The Way", "Done", "Not Delivered"];
 
-export default function ProgressBar({step}) {
+export default function ProgressBar({ selectedDetail }) {
+	const [step, setStep] = React.useState(0);
+
+	const validator = x => {
+		if (x === "Draft") {
+			setStep(0);
+		} else if (x === "Packaging") {
+			setStep(1);
+		} else if (x === "OnTheWay") {
+			setStep(2);
+		} else if (x === "Delivered") {
+			setStep(3);
+		} else if (x === "NotDelivered") {
+			setStep(4);
+		}
+	};
+
+	React.useEffect(() => {
+		validator(selectedDetail);
+	}, [selectedDetail]);
+
 	return (
 		<Stack sx={{ width: "100%" }} spacing={4}>
 			<Stepper
 				alternativeLabel
-				activeStep={0}
+				activeStep={step}
 				connector={<ColorlibConnector />}>
 				{steps.map(label => (
 					<Step key={label}>

@@ -43,14 +43,14 @@ const Cart = () => {
 
 	// Data
 	const [cart, setCart] = React.useState([]);
-	const [cartId, setCartId] = React.useState()
+	const [cartId, setCartId] = React.useState();
 	const [customer, setCustomer] = React.useState([]);
 	const [customerAddress, setCustomerAddress] = React.useState([]);
 
 	//Select
 	const [selectedCustomer, setSelectedCustomer] = React.useState("");
 	const [selectedAddress, setSelectedAddress] = React.useState("");
-	const [selectedDelivery, setSelectedDelivery] = React.useState(dayjs())
+	const [selectedDelivery, setSelectedDelivery] = React.useState(dayjs());
 
 	// Loading State
 	const [loading, setLoading] = React.useState(false);
@@ -69,7 +69,7 @@ const Cart = () => {
 			const res = await loadCartId(user.OrganizationId);
 
 			if (res) {
-				setCartId(res)
+				setCartId(res);
 			}
 		} catch (error) {
 			Swal.fire({
@@ -209,21 +209,25 @@ const Cart = () => {
 			Notes: notes !== "" ? notes : null,
 		};
 
-		console.log(body)
+		try {
+			const res = await actionCheckout(body);
 
-		// try {
-		// 	const res = await actionCheckout(body)
-		// } catch (error) {
+			if (res) {
+				Swal.fire({
+					title: "Checkout order berhasil!",
+					timer: 1000,
+					timerProgressBar: true,
+				});
+			}
+		} catch (error) {}
+	};
 
-		// }
-	}
-
-	const handleChangeAddress = (date) => {
+	const handleChangeAddress = date => {
 		if (date.$d) {
-			const formatedDate = moment(date.$d).format()
-			setSelectedDelivery(formatedDate)
+			const formatedDate = moment(date.$d).format();
+			setSelectedDelivery(formatedDate);
 		}
-	}
+	};
 
 	return (
 		<div className='w-full h-screen flex'>
@@ -412,7 +416,7 @@ const Cart = () => {
 																}}>
 																{customerAddress.length > 0 ? (
 																	[
-																		<MenuItem key="none" value=''>
+																		<MenuItem key='none' value=''>
 																			<em>None</em>
 																		</MenuItem>,
 																		...customerAddress.map((item, index) => (
@@ -424,10 +428,10 @@ const Cart = () => {
 																				}}>
 																				{item.Address}
 																			</MenuItem>
-																		))
+																		)),
 																	]
 																) : (
-																	<MenuItem key="placeholder" value={""}>
+																	<MenuItem key='placeholder' value={""}>
 																		Pilih customer untuk menampilkan alamat
 																	</MenuItem>
 																)}
@@ -457,7 +461,10 @@ const Cart = () => {
 																slotProps={{
 																	field: {
 																		clearable: true,
-																		onClear: () => { setCleared(true); setSelectedDelivery(null) },
+																		onClear: () => {
+																			setCleared(true);
+																			setSelectedDelivery(null);
+																		},
 																	},
 																	textField: {
 																		size: "small",
@@ -517,8 +524,7 @@ const Cart = () => {
 												"linear-gradient(108.32deg, #62CDCB 24.88%, #4599DB 78.49%)",
 										}}
 										className={`w-full h-full max-h-20 rounded text-white ${styles.primary_button}`}
-										onClick={handleCheckout}
-									>
+										onClick={handleCheckout}>
 										<div
 											className={`z-10 text-white ${styles.text} transition-all duration-150`}>
 											Checkout Sekarang!

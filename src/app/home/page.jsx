@@ -43,6 +43,8 @@ const Home = () => {
 		}
 	}, [user]);
 
+	
+
 	return (
 		<div className='flex max-h-screen'>
 			<ButtonMessage />

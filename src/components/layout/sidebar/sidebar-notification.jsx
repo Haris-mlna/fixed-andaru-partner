@@ -6,6 +6,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { loadNotification } from "./sidebar-notifcation.service";
 import { CircularProgress, Divider } from "@mui/material";
 import Image from "next/image";
+import { HiOutlineMailOpen } from "react-icons/hi";
 
 const SidebarNotification = () => {
 	const { user } = useUser();
@@ -109,8 +110,9 @@ const SidebarNotification = () => {
 								</div>
 							</>
 						) : (
-							<div className='w-full h-full justify-center items-center'>
-								<p className="text-sm text-slate-400">Your Notification is Empty</p>
+							<div className='w-full h-full flex flex-col justify-center items-center text-slate-400'>
+								<HiOutlineMailOpen size={32}/>
+								<p className="text-sm ">Your Notification is Empty</p>
 							</div>
 						)}
 					</>

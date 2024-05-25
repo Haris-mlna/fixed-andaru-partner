@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import WaveSVG from "@/components/ui/wave/wave";
+import WaveSVG from "../components/ui/wave/wave";
 import Image from "next/image";
 import logo from "@/assets/icons/logo-landscape.png";
 import { motion } from "framer-motion";

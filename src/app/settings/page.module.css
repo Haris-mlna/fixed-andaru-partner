@@ -1,0 +1,88 @@
+.custum_file_upload {
+	display: flex;
+	flex-direction: column;
+	align-items: space-between;
+	gap: 20px;
+	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	border: 2px dashed #cacaca;
+	padding: 1.5rem;
+	border-radius: 10px;
+	box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
+}
+
+.custum_file_upload .icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custum_file_upload .icon svg {
+	height: 80px;
+	fill: rgba(75, 85, 99, 1);
+}
+
+.custum_file_upload .text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.custum_file_upload .text span {
+	font-weight: 400;
+	color: rgba(75, 85, 99, 1);
+}
+
+.custum_file_upload input {
+	display: none;
+}
+
+.button {
+	--color: #560bad;
+	font-family: inherit;
+	display: inline-block;
+	width: 8em;
+	height: 2.6em;
+	line-height: 2.5em;
+	margin: 20px;
+	position: relative;
+	overflow: hidden;
+	border: 2px solid var(--color);
+	transition: color 0.5s;
+	z-index: 1;
+	font-size: 17px;
+	border-radius: 6px;
+	font-weight: 500;
+	color: var(--color);
+}
+
+.button:before {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	background: var(--color);
+	height: 150px;
+	width: 200px;
+	border-radius: 50%;
+}
+
+.button:hover {
+	color: #fff;
+}
+
+.button:before {
+	top: 100%;
+	left: 100%;
+	transition: all 0.7s;
+}
+
+.button:hover:before {
+	top: -30px;
+	left: -30px;
+}
+
+.button:active:before {
+	background: #3a0ca3;
+	transition: background 0s;
+}

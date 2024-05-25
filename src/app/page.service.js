@@ -1,4 +1,5 @@
 import AuthServices from "@/utils/controller/auth";
+import { text } from "@fortawesome/fontawesome-svg-core";
 import { jwtDecode } from "jwt-decode";
 
 export const handleLogin = async props => {
@@ -33,10 +34,23 @@ export const handleLogin = async props => {
 					return "ok";
 				}
 			} catch (error) {
-				setMessages({
-					text: "Username dan password salah!",
-					error: "danger",
-				});
+				if (error.status === 500) {
+					setMessages({
+						text: `Kejadi kesalahan pada server , error status : ${error.status}`,
+						error: "danger",
+					});
+				}
+				if (error.status === 403) {
+					setMessages({
+						text: "Username dan password salah!",
+						error: "danger",
+					});
+				} else {
+					setMessages({
+						text: `Error messages : ${error.message}`,
+						error: "danger",
+					});
+				}
 			} finally {
 				setLoading(false);
 			}

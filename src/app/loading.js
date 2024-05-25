@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import WaveSVG from "@/components/ui/wave/wave";
 import { CircularProgress } from "@mui/material";
+import WaveSVG from "../components/ui/wave/wave";
 
 const Landing = () => {
 	return (
