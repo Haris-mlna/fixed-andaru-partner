@@ -1,4 +1,4 @@
-import AuthServices from "@/utils/controller/auth";
+import AuthServices from "../utils/controller/auth";
 import { text } from "@fortawesome/fontawesome-svg-core";
 import { jwtDecode } from "jwt-decode";
 

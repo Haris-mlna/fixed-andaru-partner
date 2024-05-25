@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import { useProduct } from "@/context/product/product-context";
+import Sidebar from "../../../components/layout/sidebar/sidebar";
+import { useProduct } from "../../../context/product/product-context";
 import { useRouter } from "next/navigation";
 import { actionCart, getListProductManufacture } from "./page.service";
 import {

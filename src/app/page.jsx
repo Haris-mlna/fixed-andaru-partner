@@ -3,14 +3,14 @@
 import * as React from "react";
 import WaveSVG from "../components/ui/wave/wave";
 import Image from "next/image";
-import logo from "@/assets/icons/logo-landscape.png";
+import logo from "../assets/icons/logo-landscape.png";
 import { motion } from "framer-motion";
 import { handleLogin } from "./page.service";
 import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../context/user/user-context";
 import Swal from "sweetalert2";
 
 const Landing = () => {

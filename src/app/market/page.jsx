@@ -2,18 +2,18 @@
 
 import * as React from "react";
 import Image from "next/image";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import ButtonMessage from "@/components/ui/button/button-message";
-import FilterMarket from "@/components/ui/filter/market/filter-market";
-import { useProduct } from "@/context/product/product-context";
+import Sidebar from "../../components/layout/sidebar/sidebar";
+import ButtonMessage from "../../components/ui/button/button-message";
+import FilterMarket from "../../components/ui/filter/market/filter-market";
+import { useProduct } from "../../context/product/product-context";
 import { motion } from "framer-motion";
-import blob from "@/assets/background/blob-scene.svg";
+import blob from "../../assets/background/blob-scene.svg";
 import { Pagination } from "@mui/material";
 import { getListProduct } from "./page.service";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import { useRouter } from "next/navigation";
-import { useSidebar } from "@/context/sidebar/sidebar-context";
-import SkeletonProduct from "@/components/skeleton/product/product-skeleton";
+import { useSidebar } from "../../context/sidebar/sidebar-context";
+import SkeletonProduct from "../../components/skeleton/product/product-skeleton";
 
 const Market = () => {
 	const router = useRouter();

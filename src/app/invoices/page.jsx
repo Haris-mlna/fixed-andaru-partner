@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import DataTable from "@/components/ui/table/table.invoice";
-import { useUser } from "@/context/user/user-context";
+import Sidebar from "../../components/layout/sidebar/sidebar";
+import DataTable from "../../components/ui/table/table.invoice";
+import { useUser } from "../../context/user/user-context";
 import { getInvoices } from "./page.service";
-import ButtonMessage from "@/components/ui/button/button-message";
+import ButtonMessage from "../../components/ui/button/button-message";
 
 const Invoices = () => {
 	const { user } = useUser();

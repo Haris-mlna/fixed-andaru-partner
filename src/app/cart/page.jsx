@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import styles from "./page.module.css";
-import Sidebar from "@/components/layout/sidebar/sidebar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
 import { motion } from "framer-motion";
-import layeredwave from "@/assets/background/layered-wave.svg";
+import layeredwave from "../../assets/background/layered-wave.svg";
 import Image from "next/image";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import {
 	actionCheckout,
 	loadAddress,
@@ -15,7 +15,7 @@ import {
 	loadSubsidiaries,
 } from "./page.service";
 import Swal from "sweetalert2";
-import { CartList } from "@/components/ui/list/cart-list";
+import { CartList } from "../../components/ui/list/cart-list";
 import { BsBoxes, BsTrash } from "react-icons/bs";
 import { FaTruckLoading } from "react-icons/fa";
 import {

@@ -1,17 +1,17 @@
 "use client";
 
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import SidebarNotification from "@/components/layout/sidebar/sidebar-notification";
+import Sidebar from "../../components/layout/sidebar/sidebar";
+import SidebarNotification from "../../components/layout/sidebar/sidebar-notification";
 import Image from "next/image";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCameraAlt, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { getFeeds } from "./page.service";
-import { useFeed } from "@/context/feed/feed-context";
-import Feed from "@/components/ui/feeds/feeds";
-import SkeletonFeeds from "@/components/skeleton/feeds/feeds";
-import ButtonMessage from "@/components/ui/button/button-message";
+import { useFeed } from "../../context/feed/feed-context";
+import Feed from "../../components/ui/feeds/feeds";
+import SkeletonFeeds from "../../components/skeleton/feeds/feeds";
+import ButtonMessage from "../../components/ui/button/button-message";
 
 const Home = () => {
 	const { companyData, user } = useUser();

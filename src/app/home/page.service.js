@@ -1,4 +1,4 @@
-import { getList } from "@/utils/controller/get";
+import { getList } from "../../utils/controller/get";
 
 export const getFeeds = async (user, page) => {
 	const body = {

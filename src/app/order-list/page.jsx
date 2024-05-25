@@ -1,10 +1,10 @@
 "use client";
 
-import Sidebar from "@/components/layout/sidebar/sidebar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
 import { getListorder } from "./page.service";
 import React from "react";
-import { useUser } from "@/context/user/user-context";
-import ButtonMessage from "@/components/ui/button/button-message";
+import { useUser } from "../../context/user/user-context";
+import ButtonMessage from "../../components/ui/button/button-message";
 
 const OrderList = () => {
 	const { user } = useUser();

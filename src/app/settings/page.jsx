@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import { Settingsaddress } from "./address.component";
 import { Settingscompany } from "./company.component";
 import { Settingsaccount } from "./account.component";

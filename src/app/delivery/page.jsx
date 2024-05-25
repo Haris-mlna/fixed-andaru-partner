@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
-import ProgressBar from "@/components/ui/progressbar/progressbar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
+import ProgressBar from "../../components/ui/progressbar/progressbar";
 import { FaTruckFast } from "react-icons/fa6";
 import { getDeliveryDetail, getDeliveryList } from "./page.service";
-import EnhancedTable from "@/components/ui/table/table";
-import { configTableDelivery } from "@/config/config-table-delivery";
+import EnhancedTable from "../../components/ui/table/table";
+import { configTableDelivery } from "../../config/config-table-delivery";
 import moment from "moment";
 
 const Delivery = () => {

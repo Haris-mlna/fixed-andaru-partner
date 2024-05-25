@@ -1,5 +1,5 @@
-import { Client } from "@/utils/api/api";
-import { getList, getSingle } from "@/utils/controller/get";
+import { Client } from "../../utils/api/api";
+import { getList, getSingle } from "../../utils/controller/get";
 
 export const loadCartId = async customerId => {
 	const body = {

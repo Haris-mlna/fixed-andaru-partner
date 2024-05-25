@@ -1,4 +1,4 @@
-import { Client } from "@/utils/api/api";
+import { Client } from "../../utils/api/api";
 import { jwtDecode } from "jwt-decode";
 
 let decodedToken = null;

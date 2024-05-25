@@ -1,4 +1,4 @@
-import Sidebar from "@/components/layout/sidebar/sidebar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
 
 const Partner = () => {
 	return (

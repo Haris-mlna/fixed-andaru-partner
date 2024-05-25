@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Sidebar from "@/components/layout/sidebar/sidebar";
+import Sidebar from "../../components/layout/sidebar/sidebar";
 import { loadListUser, loadSubsidiaries } from "./page.service";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import styles from "./card.module.css";
 import Image from "next/image";
-import userimg from "@/assets/icons/user.png";
+import userimg from "../../assets/icons/user.png";
 
 const Manage = () => {
 	const { user, companyData } = useUser();

@@ -1,10 +1,10 @@
 import "./globals.css";
 
 // PROVIDER
-import UserProvider from "@/context/user/user-context";
-import FeedProvider from "@/context/feed/feed-context";
-import ProductProvider from "@/context/product/product-context";
-import SidebarProvider from "@/context/sidebar/sidebar-context";
+import UserProvider from "../context/user/user-context";
+import FeedProvider from "../context/feed/feed-context";
+import ProductProvider from "../context/product/product-context";
+import SidebarProvider from "../context/sidebar/sidebar-context";
 
 export const metadata = {
 	title: "Business Partner",

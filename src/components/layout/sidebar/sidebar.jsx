@@ -7,14 +7,14 @@ import {
 	faPowerOff,
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import logo from "@/assets/icons/logo-landscape.png";
-import logo_only from "@/assets/icons/andaru-logo.png";
-import UserCard from "@/components/ui/user/user-card";
-import { configsidebar } from "@/config/config-sidebar";
-import { ButtonNavigation } from "@/components/ui/button/button";
+import logo from "../../../assets/icons/logo-landscape.png";
+import logo_only from "../../../assets/icons/andaru-logo.png";
+import UserCard from "../../../components/ui/user/user-card";
+import { configsidebar } from "../../../config/config-sidebar";
+import { ButtonNavigation } from "../../../components/ui/button/button";
 import { useRouter } from "next/navigation";
-import { useUser } from "@/context/user/user-context";
-import { useSidebar } from "@/context/sidebar/sidebar-context";
+import { useUser } from "../../../context/user/user-context";
+import { useSidebar } from "../../../context/sidebar/sidebar-context";
 import { Tooltip } from "@mui/material";
 
 const Sidebar = props => {

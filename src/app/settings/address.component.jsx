@@ -1,6 +1,6 @@
 import * as React from "react";
 import { loadAddress } from "../cart/page.service";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../context/user/user-context";
 import moment from "moment";
 
 export const Settingsaddress = () => {

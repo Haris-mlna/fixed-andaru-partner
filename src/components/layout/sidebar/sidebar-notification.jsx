@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useUser } from "@/context/user/user-context";
+import { useUser } from "../../../context/user/user-context";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { loadNotification } from "./sidebar-notifcation.service";
 import { CircularProgress, Divider } from "@mui/material";

@@ -1,5 +1,5 @@
-import { getList } from "@/utils/controller/get";
-import { Client } from "@/utils/api/api";
+import { getList } from "../../../utils/controller/get";
+import { Client } from "../../../utils/api/api";
 
 export const getListProductManufacture = async (page, manufacture) => {
 	const body = {
