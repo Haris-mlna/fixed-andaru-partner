@@ -38,15 +38,7 @@ const Invoices = () => {
 					<h3 className='w-full h-12 px-4 border-b-2 border-teal-200 text-2xl bg-gradient-to-br from-teal-400 to-green-300 bg-clip-text text-transparent flex items-center'>
 						Invoice
 					</h3>
-					<div className='w-full h-16 px-4 items-center flex justify-between'>
-						<div>
-							<input
-								type='text'
-								placeholder='Search...'
-								className='font-outfit text-sm p-2 px-4 outline-none rounded-full w-96 shadow'
-							/>
-						</div>
-					</div>
+
 					<div className='p-4'>
 						<DataTable rows={list} />
 					</div>

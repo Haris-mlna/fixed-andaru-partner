@@ -1,19 +1,20 @@
-'use client'
+"use client";
 
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import React from "react";
 import userServices from "./user-services";
 
-
 const UserContext = React.createContext(undefined);
 
 const UserProvider = ({ children }) => {
+	const navigate = useRouter();
 	const [user, setUser] = React.useState();
 	const [userData, setUserData] = React.useState();
 	const [companyData, setCompanyData] = React.useState();
 	const [domain, setDomain] = React.useState();
-	const navigate = useRouter()
+	const [updateUser, setUpdateUser] = React.useState(false);
+	const [updateCompany, setUpdateCompany] = React.useState(false);
 
 	React.useEffect(() => {
 		const token = window?.localStorage.getItem("token");
@@ -39,7 +40,7 @@ const UserProvider = ({ children }) => {
 				console.log(err);
 			}
 		}
-	},[]);
+	}, []);
 
 	React.useEffect(() => {
 		if (user) {
@@ -49,7 +50,7 @@ const UserProvider = ({ children }) => {
 				}
 			});
 		}
-	}, [user]);
+	}, [user, updateUser]);
 
 	React.useEffect(() => {
 		if (user) {
@@ -59,7 +60,7 @@ const UserProvider = ({ children }) => {
 				}
 			});
 		}
-	}, [user]);
+	}, [user, updateCompany]);
 
 	const contextValue = {
 		user,
@@ -70,6 +71,10 @@ const UserProvider = ({ children }) => {
 		setCompanyData,
 		domain,
 		setDomain,
+		updateUser,
+		setUpdateUser,
+		updateCompany,
+		setUpdateCompany,
 	};
 
 	return (

@@ -5,6 +5,7 @@ import UserProvider from "../context/user/user-context";
 import FeedProvider from "../context/feed/feed-context";
 import ProductProvider from "../context/product/product-context";
 import SidebarProvider from "../context/sidebar/sidebar-context";
+import OrderDetailProvider from "../context/order-detail/order-detail";
 
 export const metadata = {
 	title: "Business Partner",
@@ -30,7 +31,9 @@ export default function RootLayout({ children }) {
 				<FeedProvider>
 					<ProductProvider>
 						<SidebarProvider>
-							<body>{children}</body>
+							<OrderDetailProvider>
+								<body>{children}</body>
+							</OrderDetailProvider>
 						</SidebarProvider>
 					</ProductProvider>
 				</FeedProvider>

@@ -99,90 +99,104 @@ const Delivery = () => {
 				{/* CONTENT */}
 				<main className='flex-1 flex flex-col overflow-y-auto'>
 					<div className='w-full min-h-64 flex justify-center items-center'>
-						<div className='w-1/2 h-full flex justify-center items-center'>
-							<ProgressBar selectedDetail={selectedDetail} />
-						</div>
-						<div className='w-1/2 h-full overflow-hidden'>
-							<div className='w-full h-full flex flex-col shadow-sm bg-white p-2 overflow-x-hidden overflow-y-auto'>
-								<h2 className=' text-xl w-full border-b-2'>Delivery Detail</h2>
-								<div className='w-full flex-1 flex'>
-									{selectedItem ? (
-										<div className='w-full overflow-y-auto'>
-											<div className='flex justify-between w-full items-center h-12'>
-												<h4 className='text-blue-500'>
-													{selectedItem?.CustomerLabel}
-												</h4>
-												<p className=''>{selectedItem?.OrderNumber}</p>
-											</div>
-											<p className='text-sm'>
-												Alamat : {selectedItem?.CustomerAddress}
-											</p>
-											<p className='text-sm'>
-												Estimasi paling lambat :{" "}
-												{selectedItem?.DueDate
-													? moment(selectedItem.DueDate).format("ll")
-													: null}
-											</p>
-											<p className='text-sm'>Status : {selectedItem?.Status}</p>
-											<p className='text-sm'>
-												Notes pengiriman :{" "}
-												{selectedItem?.ClosingNotes
-													? selectedItem.ClosingNotes
-													: "-"}
-											</p>
-											<p className='text-sm'>
-												Total item : {selectedItem?.NumberOfItems}
-											</p>
-
-											<div>
-												<h3 className='w-full border-b-2 mt-3'>List item</h3>
-												{itemDetail.length > 0 && (
-													<div className='pb-20'>
-														{itemDetail.map((item, index) => (
-															<div key={index} className='border-y-2  my-2'>
-																<p className='text-xs font-bold'>
-																	Deskripsi barang :
-																</p>
-																<p className='text-sm'>
-																	{item.ItemDescription}
-																</p>
-
-																<div>
-																	<p className='text-xs font-bold mt-2'>
-																		Kuantitas barang :
-																	</p>
-																	{item?.UnitOfMeasurement1 && (
-																		<p className='text-sm'>
-																			{item.Quantity1} -------{" "}
-																			<span className='text-xs'>per</span>{" "}
-																			{item.UnitOfMeasurement1}
-																		</p>
-																	)}
-																	{item?.UnitOfMeasurement2 && (
-																		<p className='text-sm'>
-																			{item.Quantity2} -------{" "}
-																			<span className='text-xs'>per</span>{" "}
-																			{item.UnitOfMeasurement2}
-																		</p>
-																	)}
-																	{item?.UnitOfMeasurement3 && (
-																		<p className='text-sm'>
-																			{item.Quantity3} -------{" "}
-																			<span className='text-xs'>per</span>{" "}
-																			{item.UnitOfMeasurement3}
-																		</p>
-																	)}
-																</div>
-															</div>
-														))}
-													</div>
-												)}
-											</div>
-										</div>
-									) : null}
+						{selectedDetail ? (
+							<>
+								<div className='w-1/2 h-full flex justify-center items-center'>
+									<ProgressBar selectedDetail={selectedDetail} />
 								</div>
+								<div className='w-1/2 h-full overflow-hidden'>
+									<div className='w-full h-full flex flex-col shadow-sm bg-white p-2 overflow-x-hidden overflow-y-auto'>
+										<h2 className=' text-xl w-full border-b-2'>
+											Delivery Detail
+										</h2>
+										<div className='w-full flex-1 flex'>
+											{selectedItem ? (
+												<div className='w-full overflow-y-auto'>
+													<div className='flex justify-between w-full items-center h-12'>
+														<h4 className='text-blue-500'>
+															{selectedItem?.CustomerLabel}
+														</h4>
+														<p className=''>{selectedItem?.OrderNumber}</p>
+													</div>
+													<p className='text-sm'>
+														Alamat : {selectedItem?.CustomerAddress}
+													</p>
+													<p className='text-sm'>
+														Estimasi paling lambat :{" "}
+														{selectedItem?.DueDate
+															? moment(selectedItem.DueDate).format("ll")
+															: null}
+													</p>
+													<p className='text-sm'>
+														Status : {selectedItem?.Status}
+													</p>
+													<p className='text-sm'>
+														Notes pengiriman :{" "}
+														{selectedItem?.ClosingNotes
+															? selectedItem.ClosingNotes
+															: "-"}
+													</p>
+													<p className='text-sm'>
+														Total item : {selectedItem?.NumberOfItems}
+													</p>
+
+													<div>
+														<h3 className='w-full border-b-2 mt-3'>
+															List item
+														</h3>
+														{itemDetail.length > 0 && (
+															<div className='pb-20'>
+																{itemDetail.map((item, index) => (
+																	<div key={index} className='border-y-2  my-2'>
+																		<p className='text-xs font-bold'>
+																			Deskripsi barang :
+																		</p>
+																		<p className='text-sm'>
+																			{item.ItemDescription}
+																		</p>
+
+																		<div>
+																			<p className='text-xs font-bold mt-2'>
+																				Kuantitas barang :
+																			</p>
+																			{item?.UnitOfMeasurement1 && (
+																				<p className='text-sm'>
+																					{item.Quantity1} -------{" "}
+																					<span className='text-xs'>per</span>{" "}
+																					{item.UnitOfMeasurement1}
+																				</p>
+																			)}
+																			{item?.UnitOfMeasurement2 && (
+																				<p className='text-sm'>
+																					{item.Quantity2} -------{" "}
+																					<span className='text-xs'>per</span>{" "}
+																					{item.UnitOfMeasurement2}
+																				</p>
+																			)}
+																			{item?.UnitOfMeasurement3 && (
+																				<p className='text-sm'>
+																					{item.Quantity3} -------{" "}
+																					<span className='text-xs'>per</span>{" "}
+																					{item.UnitOfMeasurement3}
+																				</p>
+																			)}
+																		</div>
+																	</div>
+																))}
+															</div>
+														)}
+													</div>
+												</div>
+											) : null}
+										</div>
+									</div>
+								</div>
+							</>
+						) : (
+							<div className='w-full h-full bg-neutral-400 flex justify-center items-center'>
+								<h2 className="text-5xl font-bold text-neutral-200 tracking-wide">PILIH PENGIRIMAN UNTUK MEMUNCULKAN DETAIL</h2>
 							</div>
-						</div>
+						)}
 					</div>
 					<div className='flex-1 bg-white'>
 						{/*   */}

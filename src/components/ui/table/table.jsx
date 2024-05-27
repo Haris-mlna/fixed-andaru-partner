@@ -85,6 +85,7 @@ function EnhancedTableHead(props) {
 			<TableRow>
 				{head.map(headCell => (
 					<TableCell
+					className="font-outfit"
 						key={headCell.id}
 						align={headCell.numeric ? "right" : "left"}
 						padding={headCell.disablePadding ? "none" : "normal"}
@@ -271,6 +272,7 @@ export default function EnhancedTable({
 												}}
 												key={headCell.id}
 												align={headCell.numeric ? "right" : "left"}
+												className="font-outfit"
 												// Applying styles to the TableCell rendering the address
 												sx={{
 													whiteSpace: "nowrap",

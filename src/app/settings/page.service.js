@@ -44,28 +44,28 @@ export const loadAddress = async id => {
 	}
 };
 
-<<<<<<< Updated upstream
-export const addAddress = async (param) => {
-    const body = {
-        actionController: "partnercontroller",
-        actionName: "AddAddress",
-        actionParam: param,
-    };
-
-    try {
-        const res = await Client.post('/action', body);
-
-        if (res) {
-            return res;
-        }
-    } catch (error) {
-        console.log(error);
-    }
-=======
-const editUser = async param => {
+export const addAddress = async param => {
 	const body = {
-		actionController: "PartnersUserController",
-		actionName: "EditPartnerUsers",
+		actionController: "partnercontroller",
+		actionName: "AddAddress",
+		actionParam: param,
+	};
+
+	try {
+		const res = await Client.post("/action", body);
+
+		if (res) {
+			return res;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const editUser = async param => {
+	const body = {
+		actionController: "PartnerUserController",
+		actionName: "EditPartnerUser",
 		actionParam: param,
 	};
 
@@ -76,7 +76,22 @@ const editUser = async param => {
 	} catch (error) {
 		console.log(error);
 	}
->>>>>>> Stashed changes
+};
+
+export const editCompany = async param => {
+	const body = {
+		actionController: "partnercontroller",
+		actionName: "UpdateMyOrganizationProfile",
+		actionParam: param,
+	};
+
+	try {
+		const res = await Client.post("/action", body);
+
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 

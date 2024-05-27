@@ -58,14 +58,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-	const {
-		onSelectAllClick,
-		order,
-		orderBy,
-		numSelected,
-		rowCount,
-		onRequestSort,
-	} = props;
+	const { order, orderBy, onRequestSort } = props;
 	const createSortHandler = property => event => {
 		onRequestSort(event, property);
 	};
@@ -98,16 +91,13 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-	numSelected: PropTypes.number.isRequired,
 	onRequestSort: PropTypes.func.isRequired,
-	onSelectAllClick: PropTypes.func.isRequired,
 	order: PropTypes.oneOf(["asc", "desc"]).isRequired,
 	orderBy: PropTypes.string.isRequired,
-	rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar(props) {
-	const { numSelected } = props;
+	const { numSelected, filterText, onFilterTextChange } = props;
 
 	return (
 		<Toolbar
@@ -131,14 +121,27 @@ function EnhancedTableToolbar(props) {
 					{numSelected} selected
 				</Typography>
 			) : (
-				<Typography
-					sx={{ flex: "1 1 100%" }}
-					variant='h6'
-					id='tableTitle'
-					component='div'
-					className='font-outfit font-light'>
-					List Invoice
-				</Typography>
+				<>
+					<Typography
+						sx={{ flex: "1 1 100%" }}
+						variant='h6'
+						id='tableTitle'
+						component='div'
+						className='font-outfit font-light'>
+						List Invoice
+					</Typography>
+					<div className='w-full h-16 px-4 items-center flex justify-between'>
+						<div>
+							<input
+								type='text'
+								placeholder='Search...'
+								value={filterText}
+								onChange={e => onFilterTextChange(e.target.value)}
+								className='font-outfit text-sm p-2 px-4 outline-none rounded-full w-96 shadow'
+							/>
+						</div>
+					</div>
+				</>
 			)}
 
 			{numSelected > 0 ? (
@@ -160,17 +163,20 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
 	numSelected: PropTypes.number.isRequired,
+	filterText: PropTypes.string.isRequired,
+	onFilterTextChange: PropTypes.func.isRequired,
 };
 
 export default function DataTable(props) {
 	const { rows } = props;
 
 	const [order, setOrder] = React.useState("asc");
-	const [orderBy, setOrderBy] = React.useState("calories");
+	const [orderBy, setOrderBy] = React.useState("DocumentNumber");
 	const [selected, setSelected] = React.useState([]);
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [filterText, setFilterText] = React.useState("");
 
 	const handleRequestSort = (event, property) => {
 		const isAsc = orderBy === property && order === "asc";
@@ -228,10 +234,45 @@ export default function DataTable(props) {
 		}).format(value);
 	};
 
+	const handleFilterTextChange = text => {
+		setFilterText(text);
+	};
+
+	const filteredRows = rows.filter(
+		row =>
+			row.DocumentNumber.toLowerCase().includes(filterText.toLowerCase()) ||
+			row.CustomerAddress.toLowerCase().includes(filterText.toLowerCase()) ||
+			row.CustomerLabel.toString()
+				.toLowerCase()
+				.includes(filterText.toLowerCase())
+	);
+
+	const sortedRows = filteredRows.sort((a, b) => {
+		if (orderBy === "DocumentAmount" || orderBy === "PayedAmount") {
+			return order === "asc"
+				? a[orderBy] - b[orderBy]
+				: b[orderBy] - a[orderBy];
+		} else {
+			const valA = a[orderBy].toString().toLowerCase();
+			const valB = b[orderBy].toString().toLowerCase();
+			if (valA < valB) {
+				return order === "asc" ? -1 : 1;
+			}
+			if (valA > valB) {
+				return order === "asc" ? 1 : -1;
+			}
+			return 0;
+		}
+	});
+
 	return (
 		<Box sx={{ width: "100%" }}>
 			<Paper sx={{ width: "100%", mb: 2 }}>
-				<EnhancedTableToolbar numSelected={selected.length} />
+				<EnhancedTableToolbar
+					numSelected={selected.length}
+					filterText={filterText}
+					onFilterTextChange={handleFilterTextChange}
+				/>
 				<TableContainer>
 					<Table
 						sx={{ minWidth: 750 }}
@@ -246,61 +287,71 @@ export default function DataTable(props) {
 							rowCount={rows.length}
 						/>
 						<TableBody>
-							{rows.map((row, index) => {
-								const isItemSelected = isSelected(row.id);
-								const labelId = `enhanced-table-checkbox-${index}`;
+							{sortedRows
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((row, index) => {
+									const isItemSelected = isSelected(row.id);
+									const labelId = `enhanced-table-checkbox-${index}`;
 
-								return (
-									<TableRow
-										hover
-										onClick={event => handleClick(event, row.id)}
-										role='checkbox'
-										aria-checked={isItemSelected}
-										tabIndex={-1}
-										key={row.Id}
-										selected={isItemSelected}
-										sx={{ cursor: "pointer" }}>
-										<TableCell align='left'>{index + 1}</TableCell>
-										<TableCell
-											align='left'
-											sx={{
-												width: "150px",
-											}}>
-											{row?.DocumentNumber}
-										</TableCell>
-										<TableCell
-											component='th'
-											id={labelId}
-											scope='row'
-											padding='normal'
-											sx={{
-												maxWidth: "400px", // adjust the width as needed
-												overflow: "hidden",
-												textOverflow: "ellipsis",
-												whiteSpace: "nowrap",
-											}}>
-											{row?.CustomerAddress}
-										</TableCell>
-										<TableCell align='right'>{row?.CustomerLabel}</TableCell>
-										<TableCell align='right'>
-											{moment(row?.DocumentDueDate).format("ll")}
-										</TableCell>
-										<TableCell align='right'>
-											{formatCurrency(row?.DocumentAmount)}
-										</TableCell>
-										<TableCell align='right' className='text-teal-400'>
-											+{formatCurrency(row?.PayedAmount)}
-										</TableCell>
-									</TableRow>
-								);
-							})}
+									return (
+										<TableRow
+											hover
+											onClick={event => handleClick(event, row.id)}
+											role='checkbox'
+											aria-checked={isItemSelected}
+											tabIndex={-1}
+											key={row.Id}
+											selected={isItemSelected}
+											sx={{ cursor: "pointer" }}>
+											<TableCell align='left' className='font-outfit'>
+												{index + 1}
+											</TableCell>
+											<TableCell
+												align='left'
+												sx={{
+													width: "150px",
+												}}
+												className='font-outfit'>
+												{row?.DocumentNumber}
+											</TableCell>
+											<TableCell
+												component='th'
+												id={labelId}
+												scope='row'
+												padding='normal'
+												className='font-outfit'
+												sx={{
+													maxWidth: "400px", // adjust the width as needed
+													overflow: "hidden",
+													textOverflow: "ellipsis",
+													whiteSpace: "nowrap",
+												}}>
+												{row?.CustomerAddress}
+											</TableCell>
+											<TableCell align='right' className='font-outfit'>
+												{row?.CustomerLabel}
+											</TableCell>
+											<TableCell align='right' className='font-outfit'>
+												{moment(row?.DocumentDueDate).format("ll")}
+											</TableCell>
+											<TableCell align='right' className='font-outfit'>
+												{formatCurrency(row?.DocumentAmount)}
+											</TableCell>
+											<TableCell
+												align='right'
+												className='text-teal-400 font-outfit'>
+												+{formatCurrency(row?.PayedAmount)}
+											</TableCell>
+										</TableRow>
+									);
+								})}
 						</TableBody>
 					</Table>
 				</TableContainer>
 				<TablePagination
 					rowsPerPageOptions={[5, 10, 25]}
 					component='div'
-					count={rows.length}
+					count={filteredRows.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					onPageChange={handleChangePage}

@@ -8,16 +8,7 @@ import { Settingscompany } from "./company.component";
 import { Settingsaccount } from "./account.component";
 
 const Settings = () => {
-	const { companyData, userData } = useUser();
 	const [settings, setSettings] = React.useState("Account");
-	const [form, setForm] = React.useState({});
-
-	React.useEffect(() => {
-		if (companyData) {
-			setForm(companyData);
-			console.log(userData);
-		}
-	}, [companyData]);
 
 	return (
 		<div className='flex w-full h-screen'>
@@ -68,9 +59,9 @@ const Settings = () => {
 					</div>
 					<div className='flex mt-1'>
 						{settings === "Company" && (
-							<Settingscompany form={form} setForm={setForm} />
+							<Settingscompany  />
 						)}
-						{settings === "Account" && <Settingsaccount userData={userData} />}
+						{settings === "Account" && <Settingsaccount />}
 						{settings === "Address" && <Settingsaddress />}
 					</div>
 				</div>

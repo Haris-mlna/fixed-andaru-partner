@@ -1,31 +1,103 @@
-import * as React from 'react'
-import Image from 'next/image';
-import styles from './page.module.css'
+import * as React from "react";
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useUser } from "../../context/user/user-context";
+import { editCompany } from "./page.service";
+import imageCompression from 'browser-image-compression';
 
 export const Settingscompany = props => {
-	const { form, setForm } = props;
+	const { companyData } = useUser();
+
+	const [form, setForm] = React.useState({
+		Id: "",
+		Name: "",
+		CompanyTitle: "",
+		DeliveryAddress: "",
+		BillingAddress: "",
+		EmailAddress: "",
+		PhoneNumber: "",
+		ProfileImagePartner: "",
+		DomainName: "",
+	});
 	const [currentImage, setCurrentImage] = React.useState("");
 	const [imageEdited, setImageEdited] = React.useState(false);
+	const [editable, setEditable] = React.useState({
+		name: false,
+		contact: false,
+		owner: false,
+		billingaddress: false,
+		deliveryaddress: false,
+	});
 
 	React.useEffect(() => {
-		setCurrentImage(`data:image/png;base64,${form?.ProfileImagePartner}`);
-	}, [form]);
+		setCurrentImage(
+			`data:image/png;base64,${companyData?.ProfileImagePartner}`
+		);
+	}, [companyData]);
 
-	const handleFileChange = event => {
-		const file = event.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				const base64String = reader.result.split(",")[1];
-				setCurrentImage(`data:image/png;base64,${base64String}`);
-				setForm(prev => ({
-					...prev,
-					ProfileImagePartner: base64String,
-				}));
-				setImageEdited(true);
-			};
-			reader.readAsDataURL(file);
+	const handleFileChange = async event => {
+    const file = event.target.files[0];
+    if (file) {
+        try {
+            const options = {
+                maxSizeMB: 2, // Set maximum size to 2MB
+                maxWidthOrHeight: 1920, // Set maximum width or height
+                useWebWorker: true // Use Web Worker for faster compression (optional)
+            };
+            const compressedFile = await imageCompression(file, options); // Compress the image
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result.split(",")[1];
+                setCurrentImage(`data:image/png;base64,${base64String}`);
+                setForm(prev => ({ ...prev, ProfileImagePartner: base64String }));
+                setImageEdited(true);
+            };
+            reader.readAsDataURL(compressedFile); // Read compressed file
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+	const handleSubmit = async () => {
+		const body = {
+			Id: companyData.Id,
+			Name: form.Name ? form.Name : companyData.Name,
+			CompanyTitle: form.CompanyTitle
+				? form.CompanyTitle
+				: companyData.CompanyTitle,
+			DeliveryAddress: form.DeliveryAddress
+				? form.DeliveryAddress
+				: companyData.DeliveryAddress,
+			BillingAddress: form.BillingAddress
+				? form.BillingAddress
+				: companyData.BillingAddress,
+			EmailAddress: form.EmailAddress
+				? form.EmailAddress
+				: companyData.EmailAddress,
+			PhoneNumber: form.PhoneNumber
+				? form.PhoneNumber
+				: companyData.PhoneNumber,
+			ProfileImagePartner: form.ProfileImagePartner
+				? form.ProfileImagePartner
+				: companyData.ProfileImagePartner,
+		};
+		try {
+		
+			const res = await editCompany(body);
+
+			if (res) {
+				console.log(res);
+			}
+			
+		} catch (error) {
+			console.log(error);
 		}
+	};
+
+	const handleChangeInput = e => {
+		const { value, id } = e.target;
+		setForm(prev => ({ ...prev, [id]: value }));
 	};
 
 	return (
@@ -68,7 +140,6 @@ export const Settingscompany = props => {
 							/>
 						</label>
 					</div>
-
 					<div
 						className={`absolute inset-0 z-10 ${
 							imageEdited ? " opacity-100" : "opacity-20"
@@ -83,66 +154,156 @@ export const Settingscompany = props => {
 					</div>
 				</div>
 				<div className='flex-1 flex-col flex gap-1'>
-					{/*  */}
 					<div className='w-full px-4'>
 						<div className='w-full flex justify-between px-2 py-4 border-b-2'>
 							<div className='flex-col'>
 								<p className='font-bold'>Name</p>
 								<p className='text-sm text-neutral-500'>
-									{form?.CompanyTitleLabel} {form?.Name}
+									{editable.name ? (
+										<div className='flex gap-2'>
+											<div className='flex flex-col'>
+												<label htmlFor='CompanyTitle'>title</label>
+												<input
+													type='text'
+													id='CompanyTitle'
+													value={form.CompanyTitle}
+													placeholder={companyData?.CompanyTitle}
+													className='p-2 outline-none border'
+													onChange={handleChangeInput}
+												/>
+											</div>
+											<div className='flex flex-col'>
+												<label htmlFor='Name'>name</label>
+												<input
+													type='text'
+													id='Name'
+													value={form.Name}
+													placeholder={companyData?.Name}
+													className='p-2 outline-none border'
+													onChange={handleChangeInput}
+												/>
+											</div>
+										</div>
+									) : (
+										`${companyData?.CompanyTitleLabel} ${companyData?.Name}`
+									)}
 								</p>
 							</div>
 							<div>
-								<button className='p-1 px-3 shadow border rounded text-sm'>
+								<button
+									className='p-1 px-3 shadow border rounded text-sm'
+									onClick={() => {
+										setEditable(prev => ({ ...prev, name: !editable.name }));
+									}}>
 									Edit
 								</button>
 							</div>
 						</div>
 					</div>
-					{/*  */}
 					<div className='w-full px-4'>
 						<div className='w-full flex justify-between px-2 py-4 border-b-2'>
 							<div className='flex-col'>
 								<p className='font-bold'>Contact</p>
-								<p className='text-sm text-neutral-500'>
-									email : {form?.EmailAddress}
-								</p>
-								<p className='text-sm text-neutral-500'>
-									phone : {form?.PhoneNumber}
-								</p>
+								{editable.contact ? (
+									<div className='text-sm text-neutral-500'>
+										<div className='flex flex-col'>
+											<label htmlFor='EmailAddress'>email</label>
+											<input
+												type='email'
+												id='EmailAddress'
+												value={form.EmailAddress}
+												placeholder={companyData?.EmailAddress}
+												className='p-2 outline-none border'
+												onChange={handleChangeInput}
+											/>
+										</div>
+										<div className='flex flex-col'>
+											<label htmlFor='PhoneNumber'>phone</label>
+											<input
+												type='text'
+												id='PhoneNumber'
+												value={form.PhoneNumber}
+												placeholder={companyData?.PhoneNumber}
+												className='p-2 outline-none border'
+												onChange={handleChangeInput}
+											/>
+										</div>
+									</div>
+								) : (
+									<>
+										<p className='text-sm text-neutral-500'>
+											email : {companyData?.EmailAddress}
+										</p>
+										<p className='text-sm text-neutral-500'>
+											phone : {companyData?.PhoneNumber}
+										</p>
+									</>
+								)}
 							</div>
 							<div>
-								<button className='p-1 px-3 shadow border rounded text-sm'>
+								<button
+									className='p-1 px-3 shadow border rounded text-sm'
+									onClick={() => {
+										setEditable(prev => ({
+											...prev,
+											contact: !editable.contact,
+										}));
+									}}>
 									Edit
 								</button>
 							</div>
 						</div>
 					</div>
-					{/*  */}
 					<div className='w-full px-4'>
 						<div className='w-full flex justify-between px-2 py-4 border-b-2'>
 							<div className='flex-col'>
 								<p className='font-bold'>owner</p>
-								<p className='text-sm text-neutral-500'>{form?.OwnerName}</p>
+								<p className='text-sm text-neutral-500'>
+									{companyData?.OwnerName}
+								</p>
 							</div>
 							<div>
-								<button className='p-1 px-3 shadow border rounded text-sm'>
-									Edit
-								</button>
+								{/* <button className='p-1 px-3 shadow border rounded text-sm'>
+                                    Edit
+                                </button> */}
 							</div>
 						</div>
 					</div>
-					{/*  */}
 				</div>
 			</div>
 			<div className='w-full px-6'>
 				<div className='w-full flex justify-between px-2 py-4 border-b-2'>
 					<div className='flex-col'>
 						<p className='font-bold'>Billing Address</p>
-						<p className='text-sm text-neutral-500'>{form?.BillingAddress}</p>
+						{editable.billingaddress ? (
+							<div className='text-sm text-neutral-500'>
+								<div className='flex flex-col'>
+									<label htmlFor='BillingAddress'>new billing address</label>
+									<input
+										type='text'
+										id='BillingAddress'
+										value={form.BillingAddress}
+										placeholder={companyData?.BillingAddress}
+										className='p-2 outline-none border'
+										onChange={handleChangeInput}
+									/>
+								</div>
+							</div>
+						) : (
+							<p className='text-sm text-neutral-500'>
+								{companyData?.BillingAddress}
+							</p>
+						)}
 					</div>
 					<div>
-						<button className='p-1 px-3 shadow border rounded text-sm'>
+						<button
+							className='p-1 px-3 shadow border rounded text-sm'
+							onClick={() => {
+								setEditable(prev => ({
+									...prev,
+									billingaddress: !editable.billingaddress,
+								}));
+							}}>
 							Edit
 						</button>
 					</div>
@@ -152,20 +313,41 @@ export const Settingscompany = props => {
 				<div className='w-full flex justify-between px-2 py-4 border-b-2'>
 					<div className='flex-col'>
 						<p className='font-bold'>Delivery Address</p>
-						<p className='text-sm text-neutral-500'>{form?.DeliveryAddress}</p>
+						{editable.deliveryaddress ? (
+							<div className='text-sm text-neutral-500'>
+								<div className='flex flex-col'>
+									<label htmlFor='DeliveryAddress'>new delivery address</label>
+									<input
+										type='text'
+										id='DeliveryAddress'
+										value={form.DeliveryAddress}
+										placeholder={companyData?.DeliveryAddress}
+										className='p-2 outline-none border'
+										onChange={handleChangeInput}
+									/>
+								</div>
+							</div>
+						) : (
+							<p className='text-sm text-neutral-500'>
+								{companyData?.DeliveryAddress}
+							</p>
+						)}
 					</div>
 					<div>
-						<button className='p-1 px-3 shadow border rounded text-sm'>
+						<button
+							className='p-1 px-3 shadow border rounded text-sm'
+							onClick={() => {
+								setEditable(prev => ({
+									...prev,
+									deliveryaddress: !editable.deliveryaddress,
+								}));
+							}}>
 							Edit
 						</button>
 					</div>
 				</div>
 			</div>
-			<button
-				className={styles.button}
-				onClick={() => {
-					console.log(form);
-				}}>
+			<button className={styles.button} onClick={handleSubmit}>
 				Save
 			</button>
 		</div>

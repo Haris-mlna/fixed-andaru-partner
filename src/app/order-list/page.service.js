@@ -18,7 +18,28 @@ export const getListorder = async id => {
 		],
 	};
 
-	const res = await getList(body, '/getlist');
+	const res = await getList(body, "/getlist");
 
 	return res;
+};
+
+export const orderListDetail = async id => {
+	const body = {
+		modelName: "ordercartitems",
+		criteriaList: [
+			{
+				propertyName: "orderCartId",
+				operator: "=",
+				value: id,
+			},
+		],
+	};
+
+	try {
+		const res = await getList(body, "/getlist");
+
+		return res;
+	} catch (err) {
+		console.log(err);
+	}
 };

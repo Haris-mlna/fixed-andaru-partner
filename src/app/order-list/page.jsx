@@ -1,22 +1,20 @@
 "use client";
 
 import Sidebar from "../../components/layout/sidebar/sidebar";
-import { getListorder } from "./page.service";
+import { getListorder, orderListDetail } from "./page.service";
 import React from "react";
 import { useUser } from "../../context/user/user-context";
 import ButtonMessage from "../../components/ui/button/button-message";
+import TableOrderList from "../../components/ui/table/table.order-list";
+import { useRouter } from "next/navigation";
+import { useOrderDetail } from "../../context/order-detail/order-detail";
+import { CircularProgress } from "@mui/material";
 
 const OrderList = () => {
 	const { user } = useUser();
-
-	const palette = ["#69faef", "#00d5fd", "#00a9fa", "#facc15", "#ff0066"];
-	const data = [
-		{ id: 0, value: 50, label: "Done" },
-		{ id: 1, value: 10, label: "Active" },
-		{ id: 3, value: 20, label: "Checked Out" },
-		{ id: 4, value: 10, label: "Pending" },
-		{ id: 5, value: 10, label: "Cancelled" },
-	];
+	const { setDetail, setDetailList } = useOrderDetail();
+	const [loading, setLoading] = React.useState(false);
+	const router = useRouter();
 
 	const [list, setList] = React.useState([]);
 
@@ -25,7 +23,11 @@ const OrderList = () => {
 			const res = await getListorder(id);
 
 			if (res) {
-				setList(res.data);
+				const dataWithId = res.data.map(item => ({
+					...item,
+					id: item.Id,
+				}));
+				setList(dataWithId);
 			}
 		} catch (error) {
 			console.log(error);
@@ -38,21 +40,43 @@ const OrderList = () => {
 		}
 	}, [user]);
 
+	const handleDetail = async item => {
+		setDetail(item);
+
+		try {
+			const res = await orderListDetail(item.Id);
+			setLoading(true);
+			if (res) {
+				setDetailList(res.data);
+				setTimeout(() => {
+					router.push("/order-list/detail-order");
+				}, 1000);
+			}
+		} catch (error) {
+		} finally {
+			setLoading(false);
+		}
+
+		setTimeout(() => {
+			router.push("/order-list/detail-order");
+		}, 1000);
+	};
+
 	return (
 		<div className='w-full h-screen flex'>
-			<ButtonMessage />
 			<Sidebar />
-			<div className='flex flex-1 bg-white'>
+			<div className='flex relative flex-1 bg-white'>
+				{loading && (
+					<div className='w-full h-scren absolute z-50 bg-black/40 flex justify-center items-center'>
+						<CircularProgress size={20} />
+					</div>
+				)}
 				<div className='w-full overflow-y-auto'>
 					<div className='w-full h-12 flex items-center px-4 bg-white shadow-sm'>
 						Order List
 					</div>
-					<div>
-						{list.map((item, index) => (
-							<div key={index}>
-								<p>{item.OrderNumber}</p>
-							</div>
-						))}
+					<div className='w-full '>
+						<TableOrderList rows={list} handleDetail={handleDetail} />
 					</div>
 				</div>
 			</div>
