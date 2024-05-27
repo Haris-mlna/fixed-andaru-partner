@@ -18,7 +18,10 @@ const ButtonMessage = () => {
 				borderRadius: open ? "12px" : "50%",
 			}}
 			onClick={toggleOpen}
-			className={` z-50 fixed bottom-4 right-4 shadow-lg border border-slate-200 transition-colors outline-none duration-150 ${
+			style={{
+				zIndex: 100,
+			}}
+			className={`fixed bottom-4 right-4 shadow-lg border border-slate-200 transition-colors outline-none duration-150 ${
 				open ? "bg-white text-blue-500" : "text-white bg-blue-500"
 			}`}>
 			<FontAwesomeIcon icon={faMessage} />
