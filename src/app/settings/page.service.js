@@ -1,3 +1,4 @@
+import { Client } from "../../utils/api/api";
 import { getList } from "../../utils/controller/get";
 
 export const loadCompany = async id => {
@@ -41,4 +42,22 @@ const loadAddress = async id => {
 		console.log(error);
 		throw new Error(error);
 	}
+};
+
+export const addAddress = async (param) => {
+    const body = {
+        actionController: "partnercontroller",
+        actionName: "AddAddress",
+        actionParam: param,
+    };
+
+    try {
+        const res = await Client.post('/action', body);
+
+        if (res) {
+            return res;
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };
