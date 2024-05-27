@@ -22,7 +22,7 @@ export const loadCompany = async id => {
 	} catch (error) {}
 };
 
-const loadAddress = async id => {
+export const loadAddress = async id => {
 	const body = {
 		modelName: "partneraddresses",
 		criteriaList: [
@@ -77,4 +77,24 @@ const editUser = async param => {
 		console.log(error);
 	}
 >>>>>>> Stashed changes
+};
+
+
+export const deleteAddresses = async (ids) => {
+    const body = {
+        actionController: "partnercontroller",
+        actionName: "DeleteAddress",
+        actionParam: {
+            idList: ids, // Mengirim array ID
+        },
+    };
+
+    try {
+        const res = await Client.post("/action", body);
+        if (res) {
+            return res;
+        }
+    } catch (error) {
+        console.log(error);
+    }
 };

@@ -1,4 +1,5 @@
 import { getList } from "../../utils/controller/get";
+import { Client } from "../../utils/api/api";
 
 export const loadListUser = async id => {
 	const body = {
@@ -41,3 +42,20 @@ export const loadSubsidiaries = async id => {
 		console.log(err);
 	}
 };
+
+export const addPartner = async (param) => {
+	const body = {
+		actionController: "PartnerUserController",
+		actionName: "AddPartnerUser",
+		actionParam: param,
+	};
+
+	try {
+		const res = await Client.post('/action', body);
+
+		return res
+	} catch (err) {
+		console.log(err);
+	}
+};
+
