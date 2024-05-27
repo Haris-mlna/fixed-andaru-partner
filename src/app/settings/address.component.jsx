@@ -1,7 +1,9 @@
 import * as React from "react";
-import { loadAddress } from "../cart/page.service";
+import { loadAddress } from "./page.service";
 import { addAddress } from "./page.service";
+import { deleteAddresses } from "./page.service";
 import { useUser } from "../../context/user/user-context";
+import { FiTrash2 } from "react-icons/fi";
 import moment from "moment";
 
 export const Settingsaddress = () => {
@@ -9,7 +11,9 @@ export const Settingsaddress = () => {
 
   const [listaddress, setListaddress] = React.useState([]);
   const [showModal, setShowModal] = React.useState(false);
-  const [updateData, setUpdateData] = React.useState(false)
+  const [showCheckboxes, setShowCheckboxes] = React.useState(false);
+  const [selectedAddresses, setSelectedAddresses] = React.useState([]);
+  const [updateData, setUpdateData] = React.useState(false);
   const [form, setForm] = React.useState({
     addressLabel: "",
     address: "",
@@ -56,17 +60,17 @@ export const Settingsaddress = () => {
 
   const handleAddAddressSubmit = async (e) => {
     e.preventDefault();
-	
+
     try {
-		const param = {
-			OrganizationId: user.OrganizationId, // Pastikan untuk menyertakan ID organisasi
-			AddressLabel: form.addressLabel,
-			Address: form.address,
-			ContactNumber: form.phoneNumber,
-		};
-		const res = await addAddress(param);
-		if (res) {
-		  setUpdateData(!updateData)
+      const param = {
+        OrganizationId: user.OrganizationId, // Pastikan untuk menyertakan ID organisasi
+        AddressLabel: form.addressLabel,
+        Address: form.address,
+        ContactNumber: form.phoneNumber,
+      };
+      const res = await addAddress(param);
+      if (res) {
+        setUpdateData(!updateData);
         // Lakukan sesuatu dengan respons jika perlu
         console.log("Alamat berhasil ditambahkan:", res);
         // Ambil data ulang setelah menambahkan alamat baru
@@ -80,14 +84,53 @@ export const Settingsaddress = () => {
     }
   };
 
+  const handleToggleCheckboxes = () => {
+    setShowCheckboxes(!showCheckboxes);
+    setSelectedAddresses([]);
+  };
+
+  const handleSelectAddress = (id) => {
+    setSelectedAddresses((prev) =>
+      prev.includes(id)
+        ? prev.filter((addressId) => addressId !== id)
+        : [...prev, id]
+    );
+  };
+
+  const handleDeleteAddresses = async () => {
+    try {
+      // Mengirim array ID yang dipilih ke fungsi deleteAddresses
+      const res = await deleteAddresses(selectedAddresses);
+      if (res) {
+        console.log("Alamat berhasil dihapus:", res);
+        fetchData(user.OrganizationId); // Ambil data ulang setelah menghapus alamat
+        setShowCheckboxes(false); // Sembunyikan checkbox setelah menghapus
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-4 w-full">
-      <div className="mb-4">
+      <div className="mb-4 flex justify-between">
         <button
           onClick={handleAddAddress}
           className=" bg-gradient-to-br from-indigo-500 to-blue-400 text-white p-1 px-4 rounded"
         >
           Add address +{" "}
+        </button>
+        {/* <button
+          onClick={handleToggleCheckboxes}
+          className="bg-red-500 text-white p-1 px-4 rounded"
+        >
+          {showCheckboxes ? "Cancel" : "Delete address"}
+        </button> */}
+        <button
+          className="p-2 rounded shadow text-red-500"
+          onClick={handleToggleCheckboxes}
+        >
+          {showCheckboxes ? "Cancel" : <FiTrash2 size={18} />}
         </button>
       </div>
       <div className="w-full flex flex-col gap-2">
@@ -97,25 +140,47 @@ export const Settingsaddress = () => {
               className="w-full min-h-36 bg-neutral-100 rounded p-2"
               key={index}
             >
-              <div className="flex justify-between w-full items-center">
-                <p className="font-bold text-2xl uppercase">
-                  {item.AddressLabel}
-                </p>
-                <p className="text-sm text-neutral-400">
-                  {moment(item.InsertStamp).format("ll")}
-                </p>
-              </div>
-              <div>
-                <p className="font-semibold">Contact</p>
-                <p className="text-sm">phone : {item.ContactNumber}</p>
-              </div>
-              <div>
-                <p className="font-semibold">Address</p>
-                <p className="text-sm">address : {item.Address}</p>
+              {showCheckboxes && (
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={selectedAddresses.includes(item.Id)}
+                  onChange={() => handleSelectAddress(item.Id)}
+                />
+              )}
+
+              <div className="flex-grow">
+                <div className="flex justify-between w-full items-center">
+                  <p className="font-bold text-2xl uppercase">
+                    {item.AddressLabel}
+                  </p>
+                  <p className="text-sm text-neutral-400">
+                    {moment(item.InsertStamp).format("ll")}
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold">Contact</p>
+                  <p className="text-sm">phone : {item.ContactNumber}</p>
+                </div>
+                <div>
+                  <p className="font-semibold">Address</p>
+                  <p className="text-sm">address : {item.Address}</p>
+                </div>
               </div>
             </div>
           ))}
       </div>
+
+      {showCheckboxes && selectedAddresses.length > 0 && (
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={handleDeleteAddresses}
+            className="bg-red-500 text-white p-1 px-4 rounded"
+          >
+            Delete Selected
+          </button>
+        </div>
+      )}
 
       {/* Modal untuk menambahkan alamat */}
       {showModal && (

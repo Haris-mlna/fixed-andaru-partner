@@ -22,7 +22,7 @@ export const loadCompany = async id => {
 	} catch (error) {}
 };
 
-const loadAddress = async id => {
+export const loadAddress = async id => {
 	const body = {
 		modelName: "partneraddresses",
 		criteriaList: [
@@ -54,6 +54,26 @@ export const addAddress = async (param) => {
     try {
         const res = await Client.post('/action', body);
 
+        if (res) {
+            return res;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+export const deleteAddresses = async (ids) => {
+    const body = {
+        actionController: "partnercontroller",
+        actionName: "DeleteAddress",
+        actionParam: {
+            idList: ids, // Mengirim array ID
+        },
+    };
+
+    try {
+        const res = await Client.post("/action", body);
         if (res) {
             return res;
         }
