@@ -1,11 +1,12 @@
 import { getList } from "../../utils/controller/get";
 
-export const getListProduct = async page => {
+export const getListProduct = async (page, filter) => {
 	const body = {
 		modelName: "products",
 		pageNumber: page,
 		maximumResult: 15,
 		sortList: [`Id asc`],
+		criteriaList: filter,
 	};
 
 	try {

@@ -44,6 +44,7 @@ const loadAddress = async id => {
 	}
 };
 
+<<<<<<< Updated upstream
 export const addAddress = async (param) => {
     const body = {
         actionController: "partnercontroller",
@@ -60,4 +61,20 @@ export const addAddress = async (param) => {
     } catch (error) {
         console.log(error);
     }
+=======
+const editUser = async param => {
+	const body = {
+		actionController: "PartnersUserController",
+		actionName: "EditPartnerUsers",
+		actionParam: param,
+	};
+
+	try {
+		const res = await Client.post("/action", body);
+
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+>>>>>>> Stashed changes
 };
