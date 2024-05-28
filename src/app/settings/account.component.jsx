@@ -8,8 +8,9 @@ import { useUser } from "../../context/user/user-context";
 import Swal from "sweetalert2";
 
 export const Settingsaccount = props => {
-	const { userData, updateUser, setUpdateUser } = useUser();
+	const { setLoading } = props;
 
+	const { userData, updateUser, setUpdateUser } = useUser();
 	const imageDataUrl = `data:image/png;base64,${userData?.ProfilePicture}`;
 	const imageData = base64 => {
 		if (base64) {
@@ -18,12 +19,13 @@ export const Settingsaccount = props => {
 
 		return "";
 	};
+
 	const [form, setForm] = React.useState({
 		PartnerUserId: "",
 		Name: "",
 		Username: "",
 		EmailAddress: "",
-		PhoneNumber: "",
+		PhoneNumber: "-",
 		ProfilePicture: "",
 	});
 
@@ -51,6 +53,7 @@ export const Settingsaccount = props => {
 
 		try {
 			const res = await editUser(body);
+			setLoading(true);
 
 			if (res) {
 				setEdit(initialEdit);
@@ -67,6 +70,8 @@ export const Settingsaccount = props => {
 			}
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -74,6 +79,7 @@ export const Settingsaccount = props => {
 		const file = e.target.files[0];
 		if (file) {
 			try {
+				setLoading(true);
 				const options = {
 					maxSizeMB: 2, // Set maximum size to 2MB
 					maxWidthOrHeight: 1920, // Set maximum width or height
@@ -90,6 +96,8 @@ export const Settingsaccount = props => {
 				reader.readAsDataURL(compressedFile); // Read compressed file
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
 		}
 	};

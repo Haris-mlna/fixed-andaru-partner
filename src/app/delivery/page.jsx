@@ -194,7 +194,7 @@ const Delivery = () => {
 							</>
 						) : (
 							<div className='w-full h-full bg-neutral-400 flex justify-center items-center'>
-								<h2 className="text-5xl font-bold text-neutral-200 tracking-wide">PILIH PENGIRIMAN UNTUK MEMUNCULKAN DETAIL</h2>
+								<h2 className="text-4xl font-bold text-neutral-200 tracking-wide">PILIH PENGIRIMAN UNTUK MEMUNCULKAN DETAIL</h2>
 							</div>
 						)}
 					</div>

@@ -23,8 +23,8 @@ export default function TableOrderList(props) {
 
 	const columns = [
 		{ field: "OrderNumber", headerName: "Order Number", flex: 1 },
-		{ field: "CustomerId", headerName: "Customer ID", flex: 1 },
-		{ field: "SupplierId", headerName: "Supplier ID", flex: 1 },
+		{ field: "InsertedBy", headerName: "Inserted By", flex: 1 },
+		{ field: "SupplierName", headerName: "Supplier Name", flex: 1 },
 		{ field: "DeliveryAddress", headerName: "Delivery Address", flex: 2 },
 		{
 			field: "Date",

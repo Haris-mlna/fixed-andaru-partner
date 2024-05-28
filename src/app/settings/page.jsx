@@ -6,12 +6,23 @@ import { useUser } from "../../context/user/user-context";
 import { Settingsaddress } from "./address.component";
 import { Settingscompany } from "./company.component";
 import { Settingsaccount } from "./account.component";
+import { CircularProgress } from "@mui/material";
 
 const Settings = () => {
 	const [settings, setSettings] = React.useState("Account");
+	const [loading, setLoading] = React.useState(false);
 
 	return (
-		<div className='flex w-full h-screen'>
+		<div className='flex w-full h-screen relative'>
+			{loading && (
+				<div
+					style={{
+						zIndex: 10000,
+					}}
+					className='w-full h-full fixed top-0 left-0 bg-black/40 flex justify-center items-center text-white'>
+					<CircularProgress size={54} />
+				</div>
+			)}
 			<Sidebar />
 			<div className=' w-64 h-full bg-white border-r-2 p-4'>
 				<button
@@ -59,17 +70,19 @@ const Settings = () => {
 					</div>
 					<div className='flex mt-1'>
 						{settings === "Company" && (
-							<Settingscompany  />
+							<Settingscompany setLoading={setLoading} />
 						)}
-						{settings === "Account" && <Settingsaccount />}
-						{settings === "Address" && <Settingsaddress />}
+						{settings === "Account" && (
+							<Settingsaccount setLoading={setLoading} />
+						)}
+						{settings === "Address" && (
+							<Settingsaddress setLoading={setLoading} />
+						)}
 					</div>
 				</div>
 			</div>
 		</div>
 	);
 };
-
-
 
 export default Settings;

@@ -3,9 +3,11 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { useUser } from "../../context/user/user-context";
 import { editCompany } from "./page.service";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 export const Settingscompany = props => {
+	const { setLoading } = props;
+
 	const { companyData } = useUser();
 
 	const [form, setForm] = React.useState({
@@ -36,28 +38,31 @@ export const Settingscompany = props => {
 	}, [companyData]);
 
 	const handleFileChange = async event => {
-    const file = event.target.files[0];
-    if (file) {
-        try {
-            const options = {
-                maxSizeMB: 2, // Set maximum size to 2MB
-                maxWidthOrHeight: 1920, // Set maximum width or height
-                useWebWorker: true // Use Web Worker for faster compression (optional)
-            };
-            const compressedFile = await imageCompression(file, options); // Compress the image
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result.split(",")[1];
-                setCurrentImage(`data:image/png;base64,${base64String}`);
-                setForm(prev => ({ ...prev, ProfileImagePartner: base64String }));
-                setImageEdited(true);
-            };
-            reader.readAsDataURL(compressedFile); // Read compressed file
-        } catch (error) {
-            console.log(error);
-        }
-    }
-};
+		const file = event.target.files[0];
+		if (file) {
+			try {
+				setLoading(true);
+				const options = {
+					maxSizeMB: 2, // Set maximum size to 2MB
+					maxWidthOrHeight: 1920, // Set maximum width or height
+					useWebWorker: true, // Use Web Worker for faster compression (optional)
+				};
+				const compressedFile = await imageCompression(file, options); // Compress the image
+				const reader = new FileReader();
+				reader.onloadend = () => {
+					const base64String = reader.result.split(",")[1];
+					setCurrentImage(`data:image/png;base64,${base64String}`);
+					setForm(prev => ({ ...prev, ProfileImagePartner: base64String }));
+					setImageEdited(true);
+				};
+				reader.readAsDataURL(compressedFile); // Read compressed file
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
+		}
+	};
 
 	const handleSubmit = async () => {
 		const body = {
@@ -83,15 +88,16 @@ export const Settingscompany = props => {
 				: companyData.ProfileImagePartner,
 		};
 		try {
-		
+			setLoading(true);
 			const res = await editCompany(body);
 
 			if (res) {
 				console.log(res);
 			}
-			
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
