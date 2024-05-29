@@ -1,8 +1,10 @@
 import * as React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const UserCard = props => {
 	const { userData, open } = props;
+	const router = useRouter();
 
 	// Convert base64 string to data URL
 	const imageDataUrl = `data:image/png;base64,${userData?.ProfilePicture}`;
@@ -34,7 +36,9 @@ const UserCard = props => {
 						Hello! <span className='text-sky-400'>{userData?.Name}</span>
 					</p>
 					<p className='m-0 p-0 text-sm'>{userData?.EmailAddress}</p>
-					<button className='w-14 h-5 mt-1 bg-indigo-400 text-white rounded text-xs flex justify-center items-center gap-2'>
+					<button className='w-14 h-5 mt-1 bg-indigo-400 text-white rounded text-xs flex justify-center items-center gap-2' onClick={() => {
+						router.push('/settings')
+					}}>
 						Edit
 					</button>
 				</div>

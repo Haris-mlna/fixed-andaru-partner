@@ -54,6 +54,7 @@ const Cart = () => {
 
 	// Loading State
 	const [loading, setLoading] = React.useState(false);
+	const [loadingCheckout, setLoadingCheckout] = React.useState(false)
 
 	// Input
 	const [cleared, setCleared] = React.useState(false);
@@ -211,7 +212,6 @@ const Cart = () => {
 
 		try {
 			const res = await actionCheckout(body);
-
 			if (res) {
 				Swal.fire({
 					title: "Checkout order berhasil!",

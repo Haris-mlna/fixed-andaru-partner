@@ -6,16 +6,21 @@ import { useOrderDetail } from "../../../context/order-detail/order-detail";
 import { MdOutlineTouchApp } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import moment from "moment";
+import { FiTrash2 } from "react-icons/fi";
 
 const OrderDetail = () => {
 	const router = useRouter();
 	const { detail, detailList } = useOrderDetail();
 
 	React.useEffect(() => {
-		if (!detail) {
+		if (!detail && !detailList) {
 			router.replace("/order-list");
 		}
-	}, [detail]);
+	}, [detail, detailList, router]);
+
+	if (!detail && !detailList) {
+		return null; // Render nothing while redirecting
+	}
 
 	return (
 		<div className='w-full h-screen flex'>
@@ -79,7 +84,11 @@ const OrderDetail = () => {
 								</p>
 							</div>
 
-							<button className='w-full h-16 bg-gradient-to-br from-blue-900 to-blue-700'>
+							<button
+								className='w-full h-16 bg-gradient-to-br from-blue-900 to-blue-700'
+								onClick={() => {
+									console.log(detailList);
+								}}>
 								<div className='w-full h-full items-center flex p-2 gap-2 text-white'>
 									<MdOutlineTouchApp size={48} />
 									<div className='flex flex-col'>
@@ -91,7 +100,12 @@ const OrderDetail = () => {
 						</div>
 
 						<div className='mt-4'>
-							<h4>List Item</h4>
+							<div className='w-full flex items-center justify-between'>
+								<h4>List Item</h4>
+								<button className='flex gap-1 items-center text-red-500 bg-white shadow p-1 px-2 rounded-sm'>
+									<FiTrash2 /> Batalkan item pesanan
+								</button>
+							</div>
 							<table className='border border-collapse border-gray-200 mt-2 w-full'>
 								<thead>
 									<tr>
@@ -124,6 +138,12 @@ const OrderDetail = () => {
 										</th>
 										<th className='border p-2 w-5/100 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
 											Qty2
+										</th>
+										<th className='border p-2 w-5/100 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
+											Cancelled Qty1
+										</th>
+										<th className='border p-2 w-5/100 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
+											Cancelled Qty2
 										</th>
 									</tr>
 								</thead>
@@ -160,6 +180,12 @@ const OrderDetail = () => {
 											<td className='border p-2 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
 												{item?.QuantityUom2}
 											</td>
+											<td className='border p-2 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
+												{item?.CanceledQuantity1}
+											</td>
+											<td className='border p-2 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
+												{item?.CanceledQuantity2}
+											</td>
 										</tr>
 									))}
 								</tbody>
@@ -174,13 +200,14 @@ const OrderDetail = () => {
 								cols='30'
 								rows='10'
 								className={`resize-none w-full border bg-neutral-50 border-neutral-300 font-outfit text-sm p-2
-                ${detail.Notes ? "" : "text-neutral-400"}
-                `}
+									${detail?.Notes ? "" : "text-neutral-400"}
+									`}
 								value={
-									detail.Notes
-										? detail.Notes
+									detail?.Notes
+										? detail?.Notes
 										: "Tidak ada notes pada pesanan ini"
-								}></textarea>
+								}
+								readOnly></textarea>
 						</div>
 					</div>
 				</div>
