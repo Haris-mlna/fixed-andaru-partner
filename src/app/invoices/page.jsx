@@ -31,7 +31,6 @@ const Invoices = () => {
 
 	return (
 		<div className='flex w-full h-screen'>
-			<ButtonMessage />
 			<Sidebar />
 			<div className='flex flex-1 flex-col bg-white'>
 				<div className=' overflow-y-auto'>
