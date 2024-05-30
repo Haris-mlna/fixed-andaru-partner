@@ -24,9 +24,17 @@ const Manage = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [formData, setFormData] = React.useState(initialForm);
 
+<<<<<<< Updated upstream
   const fetchUser = async (id) => {
     try {
       const res = await loadListUser(id);
+=======
+	const [open, setOpen] = React.useState(false);
+
+	const fetchUser = async id => {
+		try {
+			const res = await loadListUser(id);
+>>>>>>> Stashed changes
 
       setListuser(res?.data);
     } catch (error) {
@@ -141,6 +149,7 @@ const Manage = () => {
               </div>
             </div>
 
+<<<<<<< Updated upstream
             {/*  */}
           </div>
         </div>
@@ -149,6 +158,21 @@ const Manage = () => {
             {companyData ? (
               <button
                 className={`
+=======
+						{/*  */}
+					</div>
+				</div>
+				<div className='w-full flex items-center p-4'>
+					<button className=' bg-gradient-to-br from-blue-950 to-blue-700 p-2 px-4 rounded text-white'>
+						+ Tambah subsidiaries
+					</button>
+				</div>
+				<div className=' w-full min-h-96 bg-white p-4'>
+					<div className='w-full flex overflow-x-auto gap-2 mb-4 pb-4 border-b-2'>
+						{companyData ? (
+							<button
+								className={`
+>>>>>>> Stashed changes
 								p-2 px-4 border-b-2
 								transition-all duration-150
 								${selected?.Id === companyData?.Id && "border-teal-500"}

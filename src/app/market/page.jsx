@@ -52,12 +52,6 @@ const Market = () => {
 		},
 	});
 
-	// OPTION MODEL
-	const [manufactureOption, setManufactureOption] = React.useState(null);
-	const [typeOption, setTypeOption] = React.useState(null);
-	const [specOption, setSpecOption] = React.useState(null);
-	const [sizeOption, setSizeOption] = React.useState(null);
-
 	const fetchProduct = async filter => {
 		try {
 			let criteriaOrders = [];
@@ -65,7 +59,12 @@ const Market = () => {
 				criteriaOrders.push(filter[key]);
 
 				var newFilter = criteriaOrders.filter(function (el) {
-					return el.Value != "" && el.Value != null && el.Value != "%%";
+					return (
+						el.Value != "" &&
+						el.Value != null &&
+						el.Value != "%%" &&
+						el.Value != "('')"
+					);
 				});
 				criteriaOrders = newFilter;
 			}
@@ -74,50 +73,8 @@ const Market = () => {
 			const res = await getListProduct(pages, criteriaOrders);
 
 			if (res) {
-				console.log(res);
 				setProduct(res.data);
 				setTotalPages(Math.ceil(res.totalRows / 15));
-			}
-
-			if (res && res.data) {
-				const manufcatureNames = [
-					...new Set(res.data.map(item => item.ManufactureName)),
-				];
-				setManufactureOption(
-					manufcatureNames.map(manufacture => ({
-						label: manufacture,
-						value: manufacture,
-					}))
-				);
-
-				// Remove duplicates from TypeName
-				const typeNames = [...new Set(res.data.map(item => item.TypeName))];
-				setTypeOption(
-					typeNames.map(type => ({
-						label: type,
-						value: type,
-					}))
-				);
-
-				// Remove duplicates from SpecificationName
-				const specNames = [
-					...new Set(res.data.map(item => item.SpecificationName)),
-				];
-				setSpecOption(
-					specNames.map(spec => ({
-						label: spec,
-						value: spec,
-					}))
-				);
-
-				// Remove duplicates from Size
-				const sizes = [...new Set(res.data.map(item => item.Size))];
-				setSizeOption(
-					sizes.map(size => ({
-						label: size,
-						value: size,
-					}))
-				);
 			}
 		} catch (error) {
 			console.log("error");
@@ -131,94 +88,6 @@ const Market = () => {
 			fetchProduct(filter);
 		}
 	}, [user, pages, filter]);
-
-	const handleCattegory = (value, label) => {
-		setSelectedBrand(value);
-		setFilter(prevFilter => {
-			const updatedFilter = { ...prevFilter };
-			const currentCategories = updatedFilter.Category.Value
-				? updatedFilter.Category.Value.replace(/[()']/g, "")
-						.split(",")
-						.map(v => v.trim())
-				: [];
-
-			const categoryIndex = currentCategories.indexOf(value);
-
-			if (categoryIndex !== -1) {
-				currentCategories.splice(categoryIndex, 1);
-			} else {
-				currentCategories.push(value);
-			}
-
-			const formattedValue = currentCategories.length
-				? `('${currentCategories.join("', '")}')`
-				: "";
-
-			updatedFilter.Category.Value = formattedValue;
-
-			return { ...updatedFilter };
-		});
-	};
-
-	const handleChangeType = selectedOption => {
-		if (selectedOption) {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Type: {
-					...prevFilter.Type,
-					Value: "('" + selectedOption.value + "')",
-				},
-			}));
-		} else {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Type: {
-					...prevFilter.Type,
-					Value: "",
-				},
-			}));
-		}
-	};
-
-	const handleChangeSpec = selectedOption => {
-		if (selectedOption) {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Spec: {
-					...prevFilter.Spec,
-					Value: "('" + selectedOption.value + "')",
-				},
-			}));
-		} else {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Spec: {
-					...prevFilter.Spec,
-					Value: "",
-				},
-			}));
-		}
-	};
-
-	const handleChangeSize = selectedOption => {
-		if (selectedOption) {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Size: {
-					...prevFilter.Size,
-					Value: "('" + selectedOption.value + "')",
-				},
-			}));
-		} else {
-			setFilter(prevFilter => ({
-				...prevFilter,
-				Size: {
-					...prevFilter.Size,
-					Value: "",
-				},
-			}));
-		}
-	};
 
 	const handleSelect = item => {
 		setProductDetail(item);
@@ -241,6 +110,16 @@ const Market = () => {
 				},
 			}));
 		}, 1000);
+	};
+
+	const handleChangeFilter = (filterKey, label) => {
+		setFilter(prevFilter => ({
+			...prevFilter,
+			[filterKey]: {
+				...prevFilter[filterKey],
+				Value: `('${label}')`,
+			},
+		}));
 	};
 
 	return (
@@ -286,7 +165,10 @@ const Market = () => {
 							<br />#<span className='text-red-500'>PASTI</span>SUKSES!
 						</h1>
 					</header>
-					<FilterMarket handleFindProduct={handleFindProduct} />
+					<FilterMarket
+						handleFindProduct={handleFindProduct}
+						onChangeFilter={handleChangeFilter}
+					/>
 					<section className='w-full bg-white min-h-screen flex flex-col py-4 px-2 overflow-x-hidden'>
 						<Pagination
 							shape='rounded'

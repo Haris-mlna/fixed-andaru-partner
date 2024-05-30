@@ -103,7 +103,7 @@ const OrderDetail = () => {
 							<div className='w-full flex items-center justify-between'>
 								<h4>List Item</h4>
 								<button className='flex gap-1 items-center text-red-500 bg-white shadow p-1 px-2 rounded-sm'>
-									<FiTrash2 /> Batalkan item pesanan
+									<FiTrash2 /> Batalkan kuantitas pesanan
 								</button>
 							</div>
 							<table className='border border-collapse border-gray-200 mt-2 w-full'>
