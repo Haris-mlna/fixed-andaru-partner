@@ -25,7 +25,7 @@ const UserCard = props => {
 					width={200}
 					height={200}
 					alt='User Profile Picture'
-					className={`aspect-square object-cover  rounded-full shadow-md ${
+					className={` object-cover  rounded-full shadow-md ${
 						open ? "w-16 h-16" : " w-14 h-14 border border-slate-400"
 					}`}
 				/>
@@ -36,9 +36,11 @@ const UserCard = props => {
 						Hello! <span className='text-sky-400'>{userData?.Name}</span>
 					</p>
 					<p className='m-0 p-0 text-sm'>{userData?.EmailAddress}</p>
-					<button className='w-14 h-5 mt-1 bg-indigo-400 text-white rounded text-xs flex justify-center items-center gap-2' onClick={() => {
-						router.push('/settings')
-					}}>
+					<button
+						className='w-14 h-5 mt-1 bg-indigo-400 text-white rounded text-xs flex justify-center items-center gap-2'
+						onClick={() => {
+							router.push("/settings");
+						}}>
 						Edit
 					</button>
 				</div>

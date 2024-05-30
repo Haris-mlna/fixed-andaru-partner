@@ -62,7 +62,7 @@ export default function TableOrderList(props) {
   ];
 
   return (
-    <div style={{ height: 700, width: "100%" }}>
+    <div style={{ width: "100%", height : 640 }}>
       <DataGrid
         rows={displayRows}
         columns={columns}

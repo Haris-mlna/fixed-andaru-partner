@@ -7,6 +7,8 @@ import { loadNotification } from "./sidebar-notifcation.service";
 import { CircularProgress, Divider } from "@mui/material";
 import Image from "next/image";
 import { HiOutlineMailOpen } from "react-icons/hi";
+import { AiOutlineClockCircle } from "react-icons/ai";
+import moment from "moment";
 
 const SidebarNotification = () => {
 	const { user } = useUser();
@@ -60,7 +62,7 @@ const SidebarNotification = () => {
 
 									return (
 										<div key={`${item.Id} ${item.InsertStamp}`}>
-											<div className='flex w-full'>
+											<div className='flex w-full items-center gap-1'>
 												<div>
 													{item?.ProfileImageSender ? (
 														<div className='w-12 h-12 flex justify-center items-center'>
@@ -75,11 +77,29 @@ const SidebarNotification = () => {
 														<div></div>
 													)}
 												</div>
-												<div className='flex flex-col px-1 py-1'>
-													<div>
-														<h2 className='font-bold'>{item.SenderName}</h2>
+												<div className='flex flex-col px-1 py-1 flex-1'>
+													<div className='flex items-center justify-between'>
+														<div className='flex items-center gap-2'>
+															<p className='text-xs text-neutral-400'>From :</p>
+															<h2 className='font-bold text-sm'>
+																{item.SenderName}
+															</h2>
+														</div>
+														<div>
+															<div
+																style={{
+																	fontSize: 10,
+																}}
+																className=' text-blue-500 flex items-center'>
+																<AiOutlineClockCircle />
+																{moment(item.InsertStamp).format("ll")}
+															</div>
+														</div>
 													</div>
 													<div>
+														<p className='text-xs text-neutral-400'>
+															Messages :
+														</p>
 														<p className='text-xs text-ellipsis line-clamp-1'>
 															{item.Message}
 														</p>
@@ -111,8 +131,8 @@ const SidebarNotification = () => {
 							</>
 						) : (
 							<div className='w-full h-full flex flex-col justify-center items-center text-slate-400'>
-								<HiOutlineMailOpen size={32}/>
-								<p className="text-sm ">Your Notification is Empty</p>
+								<HiOutlineMailOpen size={32} />
+								<p className='text-sm '>Your Notification is Empty</p>
 							</div>
 						)}
 					</>

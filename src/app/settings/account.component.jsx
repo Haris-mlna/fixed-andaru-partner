@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import { editUser } from "./page.service";
 import { useUser } from "../../context/user/user-context";
 import Swal from "sweetalert2";
+import imageCompression from "browser-image-compression";
 
 export const Settingsaccount = props => {
 	const { setLoading } = props;
