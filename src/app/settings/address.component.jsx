@@ -134,7 +134,7 @@ export const Settingsaddress = () => {
         </button>
       </div>
       <div className="w-full flex flex-col gap-2">
-        {listaddress.length > 0 &&
+        {listaddress.length > 0 ? (
           listaddress.map((item, index) => (
             <div
               className="w-full min-h-36 bg-neutral-100 rounded p-2"
@@ -168,7 +168,10 @@ export const Settingsaddress = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>Maaf, data alamat tidak ada</p>
+        )}
       </div>
 
       {showCheckboxes && selectedAddresses.length > 0 && (
