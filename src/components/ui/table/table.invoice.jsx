@@ -296,7 +296,7 @@ export default function DataTable(props) {
 									return (
 										<TableRow
 											hover
-											onClick={event => handleClick(event, row.id)}
+											// onClick={event => handleClick(event, row.id)}
 											role='checkbox'
 											aria-checked={isItemSelected}
 											tabIndex={-1}

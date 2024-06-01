@@ -182,7 +182,8 @@ const Manage = () => {
 								</button>
 							))
 						) : (
-							<p>Maaf, data subsidiaries tidak ditemukan</p>
+							null
+							// <p>Maaf, data subsidiaries tidak ditemukan</p>
 						)}
 					</div>
 					<button
