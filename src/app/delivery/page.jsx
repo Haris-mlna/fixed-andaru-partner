@@ -98,7 +98,9 @@ const Delivery = () => {
 
 				{/* CONTENT */}
 				<main className='flex-1 flex flex-col overflow-y-auto'>
-					<div className='w-full min-h-64 flex justify-center items-center'>
+					<div className='w-full flex justify-center items-center' style={{
+						height : 350
+					}}>
 						{selectedDetail ? (
 							<>
 								<div className='w-1/2 h-full flex justify-center items-center'>
@@ -161,21 +163,21 @@ const Delivery = () => {
 																			</p>
 																			{item?.UnitOfMeasurement1 && (
 																				<p className='text-sm'>
-																					{item.Quantity1} -------{" "}
+																					{item.Quantity1} {" "}
 																					<span className='text-xs'>per</span>{" "}
 																					{item.UnitOfMeasurement1}
 																				</p>
 																			)}
 																			{item?.UnitOfMeasurement2 && (
 																				<p className='text-sm'>
-																					{item.Quantity2} -------{" "}
+																					{item.Quantity2} {" "}
 																					<span className='text-xs'>per</span>{" "}
 																					{item.UnitOfMeasurement2}
 																				</p>
 																			)}
 																			{item?.UnitOfMeasurement3 && (
 																				<p className='text-sm'>
-																					{item.Quantity3} -------{" "}
+																					{item.Quantity3} {" "}
 																					<span className='text-xs'>per</span>{" "}
 																					{item.UnitOfMeasurement3}
 																				</p>
@@ -194,7 +196,9 @@ const Delivery = () => {
 							</>
 						) : (
 							<div className='w-full h-full bg-neutral-400 flex justify-center items-center'>
-								<h2 className="text-4xl font-bold text-neutral-200 tracking-wide">PILIH PENGIRIMAN UNTUK MEMUNCULKAN DETAIL</h2>
+								<h2 className='text-4xl font-bold text-neutral-200 tracking-wide'>
+									PILIH PENGIRIMAN UNTUK MEMUNCULKAN DETAIL
+								</h2>
 							</div>
 						)}
 					</div>

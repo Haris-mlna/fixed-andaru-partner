@@ -1,3 +1,4 @@
+import { Client } from "../../utils/api/api";
 import { getList } from "../../utils/controller/get";
 
 export const getListorder = async id => {
@@ -14,6 +15,11 @@ export const getListorder = async id => {
 				propertyName: "Status",
 				operator: "!=",
 				value: "Pending",
+			},
+			{
+				propertyName: "Status",
+				operator: "=",
+				value: "CheckedOut",
 			},
 		],
 	};
@@ -41,5 +47,22 @@ export const orderListDetail = async id => {
 		return res;
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+export const CancelOrder = async param => {
+	const body = {
+		actionController: "OrdersController",
+		actionName: "CanclePurchaseOrder",
+		actionParam: {
+			idList: param,
+		},
+	};
+
+	try {
+		const res = await Client.post("/action", body);
+		return res;
+	} catch (error) {
+		console.log(error);
 	}
 };

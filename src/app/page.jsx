@@ -1,205 +1,354 @@
 "use client";
 
 import * as React from "react";
-import WaveSVG from "../components/ui/wave/wave";
+import { useState, useEffect, useRef } from "react";
+import { ContainerContent } from "../components/container/container";
 import Image from "next/image";
-import logo from "../assets/icons/logo-landscape.png";
 import { motion } from "framer-motion";
-import { handleLogin } from "./page.service";
-import { useRouter } from "next/navigation";
-import { CircularProgress } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from "../context/user/user-context";
-import Swal from "sweetalert2";
+
+// IMAGE
+import pastigroup from "../assets/images/logo-pasti-group.png";
+import background from "../assets/images/bg-landing.JPG";
+import text_logo from "../assets/icons/Text Only.png";
+import phone from "../assets/images/phone-landing.png";
+import playstore from "../assets/icons/playstore.png";
+import applestore from "../assets/icons/apple-logo.png";
+import update_img from "../assets/images/update.svg";
+import delivery_img from "../assets/images/delivery.svg";
+import collection_img from "../assets/images/collection.svg";
+import google_maps from "../assets/icons/google-maps.png";
+import LoginForm from "../components/ui/form/login-form";
+import Link from "next/link";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Landing = () => {
-	const { setUser, user } = useUser();
-	const navigate = useRouter();
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const [messages, setMessages] = React.useState(null);
-	const [loading, setLoading] = React.useState(false);
-	const [remember, setRemember] = React.useState(false);
+	const [open, setOpen] = React.useState(false);
 
-	React.useEffect(() => {
-		const emailLocal = localStorage.getItem("use");
-		const passwordLocal = localStorage.getItem("pass");
-		const localRemember = localStorage.getItem("rem");
-
-		if (emailLocal && passwordLocal) {
-			setEmail(emailLocal);
-			setPassword(passwordLocal);
-			// Convert string to boolean
-			setRemember(localRemember === "true");
-		}
-	}, [user]);
-
-	const handleSubmit = e => {
-		e.preventDefault();
-		const emailLocal = localStorage.getItem("use");
-		const passwordLocal = localStorage.getItem("pass");
-		const localRemember = localStorage.getItem("rem");
-
-		if (remember) {
-			localStorage.setItem("use", email);
-			localStorage.setItem("pass", password);
-			localStorage.setItem("rem", remember);
-		} else {
-			localStorage.removeItem("use");
-			localStorage.removeItem("pass");
-			localStorage.removeItem("rem");
-		}
-
-		handleLogin({
-			email,
-			password,
-			setLoading,
-			setUser,
-			setMessages,
-			navigate,
-		}).then(res => {
-			if (res === "ok") {
-				Swal.fire({
-					title: "Login Success!",
-					icon: "success",
-					text: "Selamat datang di bisnis partner!",
-					width: 350,
-					timerProgressBar: true,
-					timer: 2000,
-					showConfirmButton: false,
-				});
-			}
-		});
-	};
-
-	const handleInput = (e, setValue) => {
-		const { value } = e.target;
-
-		setValue(value);
+	const handleOpenModal = () => {
+		setOpen(true);
 	};
 
 	return (
-		<div className='w-full relative overflow-hidden h-screen max-h-screen flex items-center justify-center flex-col gap-1 bg-gradient-to-br from-primary to-slate-950'>
-			<motion.div
-				initial={{
-					translateY: 40,
-					opacity: 0,
-				}}
-				animate={{
-					translateY: 0,
-					opacity: 1,
-				}}
-				transition={{ duration: 0.6 }}>
-				<form
-					action=''
-					onSubmit={handleSubmit}
-					className=' w-80 z-50 min-h-96 mb-20 overflow-hidden bg-white rounded-lg shadow-md px-4 py-4 flex flex-col gap-1'>
-					<div className='py-4'>
-						<div className='w-full h-14 mb-4'>
-							<Image
-								src={logo}
-								className='h-full object-contain w-auto'
-								alt='LOGO'
-							/>
-						</div>
-						<div className='w-full flex flex-col gap-1'>
-							<label htmlFor='' className='text-sm text-slate-400'>
-								Username
-							</label>
-							<input
-								type='text'
-								className='w-full h-10 rounded border border-slate-200 placeholder-outfit px-2 text-sm outline-none'
-								placeholder='Masukan username...'
-								value={email}
-								onChange={e => {
-									handleInput(e, setEmail);
-								}}
-							/>
-						</div>
-						<div className='w-full flex flex-col gap-1'>
-							<label htmlFor='' className='text-sm text-slate-400'>
-								Password
-							</label>
-							<input
-								type='password'
-								className='w-full h-10 rounded border border-slate-200 placeholder-outfit px-2 text-sm outline-none'
-								placeholder='Masukan password...'
-								value={password}
-								onChange={e => {
-									handleInput(e, setPassword);
-								}}
-							/>
-						</div>
+		<div className='w-full min-h-screen flex flex-col'>
+			{open && <LoginForm setOpen={setOpen} open={open} />}
+			<StoreButton />
+			<nav className='w-full h-16 flex justify-between items-center bg-white'>
+				<div className='w-full h-full flex items-center relative justify-end px-4'>
+					<motion.button
+						whileHover={{
+							scale: 0.97,
+						}}
+						whileTap={{
+							scale: 0.96,
+						}}
+						onClick={handleOpenModal}
+						className=' bg-gradient-to-br from-blue-700 to-rose-400 w-24 h-10 rounded text-white cursor-pointer'>
+						Masuk
+					</motion.button>
+					<div className='absolute left-0 px-4'>
+						<Image
+							src={text_logo}
+							width={1592}
+							height={925}
+							className=' w-20 h-full'
+						/>
 					</div>
-					<div>
-						{messages && (
-							<div
-								className={`w-full rounded p-2 
-								${messages?.error === "warning" && "bg-yellow-100 border border-yellow-200"}
-								${messages?.error === "danger" && "bg-red-100 border border-red-500"}
-								`}>
-								<div className='relative'>
-									<button
-										type='button'
-										onClick={() => {
-											setMessages(null);
-										}}
-										className={` z-20 absolute top-0 right-0`}>
-										<FontAwesomeIcon icon={faXmark} width={10} />
-									</button>
-								</div>
-								<div>
-									<p
-										className={`m-0 p-0 text-sm 
-										${messages?.error === "warning" && "text-yellow-400"}
-										${messages?.error === "danger" && "text-red-700"}
-										`}>
-										{messages?.text}
-									</p>
-								</div>
-							</div>
-						)}
+				</div>
+			</nav>
+			<div
+				className='w-full relative'
+				style={{
+					height: 600,
+				}}>
+				<div className='w-full h-full absolute left-0 top-0 z-30 flex'>
+					<div className='w-1/2 h-full flex flex-col justify-center items-start overflow-hidden p-4'>
+						<h1 className='text-white font-bold text-6xl w-full tracking-wide mb-8'>
+							Welcome to Andaru Business Partner App
+						</h1>
+						<p className='text-white w-3/4 text-justify'>
+							Di Andaru Business Partner App, kami bertujuan untuk merevolusi
+							cara pelanggan berinteraksi dengan perusahaan kami. Aplikasi kami
+							dirancang untuk menjadi portal pelanggan yang komprehensif,
+							memastikan komunikasi yang mulus dan efisien antara Anda dan tim
+							kami melalui website maupun mobile.
+						</p>
+						<button
+							onClick={handleOpenModal}
+							className='text-white mt-4 w-40 h-12 border border-white flex justify-center items-center'>
+							Masuk
+						</button>
 					</div>
-					<div className='flex py-2 items-center justify-between'>
-						<div className='flex items-center gap-1'>
-							<input
-								type='checkbox'
-								name=''
-								id=''
-								checked={remember}
-								onChange={() => {
-									setRemember(!remember);
-								}}
-							/>
-							<label htmlFor='' className='text-sm text-slate-400'>
-								Ingat saya
-							</label>
-						</div>
-						<div
-							onClick={() => {
-								// console.log(user);
+					<div className='w-1/2 h-full flex flex-col justify-center items-center overflow-hidden'>
+						<motion.div
+							initial={{
+								translateY: 100,
+								opacity: 0,
 							}}
-							className='text-sm text-slate-400 cursor-pointer'>
-							Lupa password?
+							animate={{
+								translateY: 0,
+								opacity: 1,
+							}}>
+							<Image
+								src={phone}
+								width={2102}
+								height={2524}
+								className='w-full h-auto scale-75'
+							/>
+						</motion.div>
+					</div>
+				</div>
+				<div className='w-full h-full absolute left-0 top-0 z-10'>
+					<Image
+						src={background}
+						alt='background-landing'
+						layout='fill'
+						objectFit='cover'
+						className='w-full h-full'
+						priority
+					/>
+					<div className='w-full h-full absolute top-0 left-0 bg-black/60 z-20'></div>
+				</div>
+			</div>
+			<section className='w-full min-h-screen'>
+				<div
+					className='w-full flex'
+					style={{
+						height: 700,
+					}}>
+					<div className='w-1/2 h-full flex flex-col justify-center p-4'>
+						<h1 className='font-bold text-6xl bg-gradient-to-br from-blue-800 to-rose-400 bg-clip-text text-transparent'>
+							Stay Updated with the Latest Announcements.
+						</h1>
+						<p className=' text-lg'>
+							Terima berita terbaru dan pembaruan penting langsung dari
+							perusahaan kami. Tetap informatif tentang segala hal yang perlu
+							Anda ketahui, mulai dari peluncuran produk baru, promo, hingga
+							pengumuman penting.
+						</p>
+					</div>
+					<div className='w-1/2 h-full flex flex-col justify-center items-center'>
+						<Image
+							src={update_img}
+							className='w-full h-full object-cover'
+							alt='up-to-date'
+						/>
+					</div>
+				</div>
+
+				<div
+					className='w-full flex'
+					style={{
+						height: 700,
+					}}>
+					<div className='w-1/2 h-full flex flex-col justify-center items-center'>
+						<Image
+							src={delivery_img}
+							className='w-full h-full object-cover'
+							alt='up-to-date'
+						/>
+					</div>
+					<div className='w-1/2 h-full flex flex-col justify-center p-4'>
+						<h1 className='font-bold text-6xl bg-gradient-to-br from-yellow-400 to-rose-400 bg-clip-text text-transparent'>
+							Monitor Your Shipments
+						</h1>
+						<p className=' text-lg'>
+							Awasi pengiriman Anda. Sistem kami memungkinkan Anda untuk melacak
+							status pengiriman, memastikan Anda selalu mengetahui keberadaan
+							produk Anda.
+						</p>
+					</div>
+				</div>
+
+				<div
+					className='w-full flex'
+					style={{
+						height: 700,
+					}}>
+					<div className='w-1/2 h-full flex flex-col justify-center p-4'>
+						<h1 className='font-bold text-6xl bg-gradient-to-br from-blue-800 to-blue-400 bg-clip-text text-transparent'>
+							Manage Your Invoices
+						</h1>
+						<p className=' text-lg'>
+							Tetap di atas urusan keuangan Anda dengan informasi terkini
+							tentang pembayaran dan penagihan. Aplikasi kami memberikan
+							gambaran jelas tentang semua interaksi keuangan Anda dengan
+							perusahaan kami.
+						</p>
+					</div>
+					<div className='w-1/2 h-full flex flex-col justify-center items-center'>
+						<Image
+							src={collection_img}
+							className='w-full h-full object-cover'
+							alt='up-to-date'
+						/>
+					</div>
+				</div>
+			</section>
+			<footer className='w-full bg-white mt-20 p-4'>
+				<div className='w-full h-60 border-b-2 flex'>
+					<div className='w-2/4 p-4'>
+						<div>
+							<a href='https://pastigroup.co.id/' className=' cursor-pointer'>
+								<Image
+									src={pastigroup}
+									width={3864}
+									height={1152}
+									style={{
+										width : 400
+									}}
+									className=' h-full'
+								/>
+							</a>
+						</div>
+						<div className=' w-3/4'>
+							<div className='flex'>
+								<Image
+									src={google_maps}
+									width={512}
+									height={512}
+									className=' size-12 ml-6 mr-4'
+								/>
+								<p className='text-sm text-neutral-400'>
+									Jl. Gg. Haji Delit kp tegal No.88 RT.003/RW.001, Curug Wetan,
+									Kec. Curug, kab. Tangerang, Banten
+								</p>
+							</div>
+							<div></div>
 						</div>
 					</div>
-					<button
-						type='submit'
-						onClick={handleSubmit}
-						className='w-full flex justify-center items-center h-10 transition-all ease-in-out duration-300 rounded bg-gradient-to-br from-indigo-900 to-indigo-600 text-white text-sm shadow-md hover:shadow-lg hover:bg-gradient-to-br hover:from-indigo-800 hover:to-indigo-500'>
-						{loading ? (
-							<>
-								<CircularProgress sx={{ color: "white" }} size={20} />
-							</>
-						) : (
-							"Login"
-						)}
-					</button>
-				</form>
-			</motion.div>
-			<WaveSVG />
+					<div className='w-1/4 flex flex-col items-start'>
+						<h4 className='font-semibold'>Contact.</h4>
+						<div className='flex items-center'>
+							<FaPhoneAlt />
+							<h4>Telp. (Kantor)</h4>
+						</div>
+						<a
+							href='tel:02154212378'
+							className='text-sm text-neutral-500 cursor-pointer border-b border-neutral-400 '>
+							{" "}
+							021-5421-2378,
+						</a>
+						<a
+							href='tel:02150715040'
+							className='text-sm text-neutral-500 cursor-pointer border-b border-neutral-400 '>
+							{" "}
+							021-5071-5040
+						</a>
+						<div className='flex items-center'>
+							<FaWhatsapp />
+							<h4>Whatsapp.</h4>
+						</div>
+						<a
+							href='https://wa.me/628118755758'
+							className='text-sm text-neutral-500 cursor-pointer border-b border-neutral-400 '>
+							{" "}
+							0811-875-5758
+						</a>
+						<a
+							href='https://wa.me/628118875758'
+							className='text-sm text-neutral-500 cursor-pointer border-b border-neutral-400 '>
+							{" "}
+							0811-887-5758
+						</a>
+					</div>
+					<div className='w-1/4'>
+						<h4 className='font-semibold'>Get the app</h4>
+
+						<div className='flex flex-col gap-1 mt-2'>
+							<button className='w-40 rounded h-12 text-sm text-black border border-neutral-300 bg-white shadow-sm flex items-center justify-center gap-2'>
+								<Image
+									src={playstore}
+									width={512}
+									height={512}
+									className=' size-6'
+								/>
+								<div>
+									<p className='text-left text-xs text-neutral-400'>
+										Download on the
+									</p>
+									<p className='text-left'>Playstore</p>
+								</div>
+							</button>
+							<button className='w-40 rounded h-12 text-sm text-black border border-neutral-300 bg-white shadow-sm flex items-center justify-center gap-2'>
+								<Image
+									src={applestore}
+									width={512}
+									height={512}
+									className=' size-6'
+								/>
+								<div>
+									<p className='text-left text-xs text-neutral-400'>
+										Download on the
+									</p>
+									<p className='text-left'>Appstore</p>
+								</div>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div className='w-full h-8 flex items-center justify-center'>
+					<p className='text-xs text-neutral-400'>
+						Copyright &copy;2024 , PASTI Group. All rights reserved
+					</p>
+				</div>
+			</footer>
 		</div>
+	);
+};
+
+const StoreButton = () => {
+	const [visible, setVisible] = useState(true);
+	const lastScrollY = useRef(0);
+
+	const handleScroll = () => {
+		if (typeof window !== "undefined") {
+			if (window.scrollY > lastScrollY.current) {
+				// Scroll down
+				setVisible(false);
+			} else {
+				// Scroll up
+				setVisible(true);
+			}
+			lastScrollY.current = window.scrollY;
+		}
+	};
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			window.addEventListener("scroll", handleScroll);
+			return () => {
+				window.removeEventListener("scroll", handleScroll);
+			};
+		}
+	}, []);
+
+	return (
+		<motion.div
+			animate={{
+				translateY: visible ? 0 : 200,
+			}}
+			className={`fixed bottom-4 right-4 flex flex-col gap-2 z-50 transition-opacity duration-300`}>
+			<button className='w-40 rounded h-12 text-sm bg-neutral-950 text-white flex items-center justify-center gap-2'>
+				<Image src={playstore} width={512} height={512} className=' size-6' />
+				<div>
+					<p className='text-left text-xs text-neutral-400'>Download on the</p>
+					<p className='text-left'>Playstore</p>
+				</div>
+			</button>
+			<button className='w-40 rounded h-12 text-sm bg-neutral-950 text-white flex items-center justify-center gap-2'>
+				<Image
+					src={applestore}
+					width={512}
+					height={512}
+					className=' size-6 invert'
+				/>
+				<div>
+					<p className='text-left text-xs text-neutral-400'>Download on the</p>
+					<p className='text-left'>Appstore</p>
+				</div>
+			</button>
+		</motion.div>
 	);
 };
 

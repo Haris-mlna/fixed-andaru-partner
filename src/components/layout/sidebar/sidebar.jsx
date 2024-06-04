@@ -107,7 +107,9 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.navigation.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
+								newclassname={
+									open ? "border-b border-slate-100 max-xl:max-h-6" : ""
+								}
 								key={item.name}
 								onClick={() => {
 									handleNavigate(item.link);
@@ -159,7 +161,9 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.account.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
+								newclassname={
+									open ? "border-b border-slate-100 max-xl:max-h-6" : ""
+								}
 								key={item.name}
 								onClick={() => {
 									handleNavigate(item.link);
@@ -211,7 +215,9 @@ const Sidebar = props => {
 					<div className='flex flex-col gap-1'>
 						{configsidebar.settings.map((item, index) => (
 							<ButtonNavigation
-								newclassname={open ? "border-b border-slate-100 max-xl:max-h-6" : ""}
+								newclassname={
+									open ? "border-b border-slate-100 max-xl:max-h-6" : ""
+								}
 								onClick={() => {
 									handleNavigate(item.link);
 								}}
@@ -261,7 +267,7 @@ const Sidebar = props => {
 								initial={open ? { opacity: 0, x: -10 } : { opacity: 1, x: 0 }}
 								animate={open ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
 								transition={{ duration: 0.3, delay: 0.3 }}
-								className=' text-red-500 text-sm'>
+								className=' text-red-500 text-xs'>
 								Keluar
 							</motion.div>
 						) : (

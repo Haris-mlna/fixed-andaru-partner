@@ -36,7 +36,7 @@ const Partner = () => {
 							onClick={() => {
 								setSelected("partner-request");
 							}}>
-							Partner Request
+							Permintaan Partnership
 						</button>
 					</div>
 					<div className='w-full p-4'>

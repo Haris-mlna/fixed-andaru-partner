@@ -88,9 +88,9 @@ const PartnerComponents = () => {
 	return (
 		<div className='w-full'>
 			<div className='w-full border-b-2 py-3'>
-				<p className='font-semibold text-teal-500'>PARTNER ANDA</p>
+				<p className='font-semibold text-blue-500'>PARTNER ANDA</p>
 			</div>
-			<div className='w-full flex flex-wrap gap-2 mt-4'>
+			<div className='w-full flex flex-col gap-2 mt-4'>
 				{listpatner.length > 0
 					? listpatner.map(item => {
 							return (
@@ -103,6 +103,16 @@ const PartnerComponents = () => {
 			</div>
 			<div className='w-full border-b-2 py-3'>
 				<p className='font-semibold text-teal-500'>CARI PARTNER ANDA</p>
+			</div>
+
+			<div className=' py-4 w-full'>
+				<div className='w-full h-10 p-2 flex border rounded-full'>
+					<input
+						type='text'
+						className='flex-1 p-2 outline-none text-sm'
+						placeholder='Cari patner anda...'
+					/>
+				</div>
 			</div>
 			<div className='w-full flex flex-wrap gap-2 mt-4'>
 				{allpartner.length > 0

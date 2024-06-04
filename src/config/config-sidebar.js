@@ -8,6 +8,7 @@ import {
 	faStore,
 	faTruck,
 	faUserGroup,
+	faPercent,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const configsidebar = {
@@ -61,6 +62,12 @@ export const configsidebar = {
 			icons: faPeopleRoof,
 			variant: "normal",
 			link: "/manage",
+		},
+		{
+			name: "Promo",
+			icons: faPercent,
+			variant: "normal",
+			link: "/promo",
 		},
 	],
 	settings: [

@@ -7,10 +7,22 @@ import { MdOutlineTouchApp } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { FiTrash2 } from "react-icons/fi";
+import Swal from "sweetalert2";
+import { canceledQuantity, fetchDetailOrder } from "./page.service";
 
 const OrderDetail = () => {
 	const router = useRouter();
-	const { detail, detailList } = useOrderDetail();
+	const { detail, detailList, setDetail, setDetailList } = useOrderDetail();
+
+	const initialForm = detailList.map(item => ({
+		ItemId: item.Id,
+		CanceledQuantity1: Number(item.CanceledQuantity1) || 0,
+		CanceledQuantity2: Number(item.CanceledQuantity2) || 0,
+	}));
+
+	const [deleteMode, setDeleteMode] = React.useState(false);
+	const [cancelForm, setCancelForm] = React.useState(initialForm);
+	const [cancelLoading, setCancelLoading] = React.useState(false);
 
 	React.useEffect(() => {
 		if (!detail && !detailList) {
@@ -18,9 +30,82 @@ const OrderDetail = () => {
 		}
 	}, [detail, detailList, router]);
 
-	if (!detail && !detailList) {
-		return null; // Render nothing while redirecting
+	if (!detail || !detailList) {
+		return router.replace("/order-list"); // Render nothing while redirecting
 	}
+
+	const handleNumericInputChange = (value, itemId, fieldName) => {
+	// Find the item in the cancelForm array
+	const itemIndex = cancelForm.findIndex(f => f.ItemId === itemId);
+	if (itemIndex === -1) return;
+
+	// Treat empty strings as 0
+	const numericValue = value === "" ? 0 : Number(value);
+
+	// Ensure the cancelled quantity cannot exceed the original quantity
+	const originalQuantity = detailList.find(item => item.Id === itemId)[
+		fieldName === "CanceledQuantity1" ? "QuantityUom1" : "QuantityUom2"
+	];
+
+	// Update the state with the new value, ensuring it doesn't exceed the original quantity
+	setCancelForm(prevForm => [
+		...prevForm.slice(0, itemIndex),
+		{
+			...prevForm[itemIndex],
+			[fieldName]: Math.min(Math.max(numericValue, 0), originalQuantity),
+		},
+		...prevForm.slice(itemIndex + 1),
+	]);
+};
+
+	const cancelQuantity = async () => {
+		const result = await Swal.fire({
+			title: "Warning!",
+			text: "Are you sure you want to cancel quantity of the selected orders?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, cancel it!",
+			cancelButtonText: "No, keep it",
+		});
+
+		if (result.isConfirmed) {
+			setCancelLoading(true);
+			try {
+				const res = await canceledQuantity(cancelForm);
+				if (res) {
+					Swal.fire(
+						"Cancelled!",
+						"Your quantity have been cancelled.",
+						"success"
+					);
+					// Optionally, refresh the order list here
+					if (detail) {
+						const response = await fetchDetailOrder(detail.Id);
+						if (response) {
+							setCancelForm(
+								response.data.map(x => ({
+									ItemId: x.Id,
+									CanceledQuantity1: Number(x.CanceledQuantity1) || 0,
+									CanceledQuantity2: Number(x.CanceledQuantity2) || 0,
+								}))
+							);
+							setDeleteMode(false);
+							setDetailList(response.data);
+						}
+					}
+				}
+			} catch (error) {
+				Swal.fire(
+					"Error!",
+					"Failed to cancel quantity. Please try again.",
+					"error"
+				);
+				console.log("the hec is this", error);
+			} finally {
+				setCancelLoading(false);
+			}
+		}
+	};
 
 	return (
 		<div className='w-full h-screen flex'>
@@ -102,9 +187,24 @@ const OrderDetail = () => {
 						<div className='mt-4'>
 							<div className='w-full flex items-center justify-between'>
 								<h4>List Item</h4>
-								<button className='flex gap-1 items-center text-red-500 bg-white shadow p-1 px-2 rounded-sm'>
-									<FiTrash2 /> Batalkan kuantitas pesanan
-								</button>
+								<div className='flex gap-1'>
+									<button
+										className='flex gap-1 items-center text-red-500 bg-white shadow p-1 px-2 rounded-sm'
+										onClick={() => {
+											setDeleteMode(!deleteMode);
+										}}>
+										<FiTrash2 /> Batalkan kuantitas pesanan
+									</button>
+									{deleteMode ? (
+										<button
+											className='flex gap-1 items-center bg-red-500 text-white shadow p-1 px-2 rounded-sm'
+											onClick={() => {
+												cancelQuantity();
+											}}>
+											<FiTrash2 /> Batalkan kuantitas pesanan
+										</button>
+									) : null}
+								</div>
 							</div>
 							<table className='border border-collapse border-gray-200 mt-2 w-full'>
 								<thead>
@@ -181,10 +281,46 @@ const OrderDetail = () => {
 												{item?.QuantityUom2}
 											</td>
 											<td className='border p-2 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
-												{item?.CanceledQuantity1}
+												{deleteMode ? (
+													<input
+														type='text'
+														className='max-w-20 border border-neutral-400'
+														value={
+															cancelForm.find(f => f.ItemId === item.Id)
+																?.CanceledQuantity1 || 0
+														}
+														onChange={e =>
+															handleNumericInputChange(
+																e.target.value,
+																item.Id,
+																"CanceledQuantity1"
+															)
+														}
+													/>
+												) : (
+													item?.CanceledQuantity1
+												)}
 											</td>
 											<td className='border p-2 text-left whitespace-nowrap overflow-hidden overflow-ellipsis'>
-												{item?.CanceledQuantity2}
+												{deleteMode ? (
+													<input
+														type='text'
+														className='max-w-20 border border-neutral-400'
+														value={
+															cancelForm.find(f => f.ItemId === item.Id)
+																?.CanceledQuantity2 || 0
+														}
+														onChange={e =>
+															handleNumericInputChange(
+																e.target.value,
+																item.Id,
+																"CanceledQuantity2"
+															)
+														}
+													/>
+												) : (
+													item?.CanceledQuantity2
+												)}
 											</td>
 										</tr>
 									))}
@@ -200,8 +336,8 @@ const OrderDetail = () => {
 								cols='30'
 								rows='10'
 								className={`resize-none w-full border bg-neutral-50 border-neutral-300 font-outfit text-sm p-2
-									${detail?.Notes ? "" : "text-neutral-400"}
-									`}
+								${detail?.Notes ? "" : "text-neutral-400"}
+							`}
 								value={
 									detail?.Notes
 										? detail?.Notes

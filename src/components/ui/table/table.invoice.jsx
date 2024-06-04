@@ -175,7 +175,7 @@ export default function DataTable(props) {
 	const [selected, setSelected] = React.useState([]);
 	const [page, setPage] = React.useState(0);
 	const [dense, setDense] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
+	const [rowsPerPage, setRowsPerPage] = React.useState(25);
 	const [filterText, setFilterText] = React.useState("");
 
 	const handleRequestSort = (event, property) => {
@@ -349,7 +349,7 @@ export default function DataTable(props) {
 					</Table>
 				</TableContainer>
 				<TablePagination
-					rowsPerPageOptions={[5, 10, 25]}
+					rowsPerPageOptions={[25]}
 					component='div'
 					count={filteredRows.length}
 					rowsPerPage={rowsPerPage}

@@ -45,6 +45,11 @@ export const handleLogin = async props => {
 						text: "Username dan password salah!",
 						error: "danger",
 					});
+				} else if (error.status === 401) {
+					setMessages({
+						text: "Username atau password salah!",
+						error: "danger",
+					});
 				} else {
 					setMessages({
 						text: `Error messages : ${error.message}`,

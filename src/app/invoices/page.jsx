@@ -38,7 +38,7 @@ const Invoices = () => {
 						Invoice
 					</h3>
 
-					<div className='p-4'>
+					<div className=''>
 						<DataTable rows={list} />
 					</div>
 				</div>

@@ -14,9 +14,15 @@ export const ContainerModal = ({ children, setOpen }) => {
 				zIndex: 110,
 			}}
 			onClick={closeModal}>
-			<div onClick={stopPropagation}>
-				{children}
-			</div>
+			<div onClick={stopPropagation}>{children}</div>
+		</div>
+	);
+};
+
+export const ContainerContent = ({ children }) => {
+	return (
+		<div className='w-full h-full flex justify-center'>
+			<div className='w-full max-w-7xl'>{children}</div>
 		</div>
 	);
 };
