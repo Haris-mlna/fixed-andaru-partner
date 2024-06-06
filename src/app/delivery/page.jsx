@@ -29,7 +29,6 @@ const Delivery = () => {
 			const res = await getDeliveryList(newSort);
 
 			if (res) {
-				console.log(res, page + 1);
 				if (newSort !== null && newSort !== sort) {
 					// If sort changed, set new data
 					setList(res.data);
@@ -74,8 +73,6 @@ const Delivery = () => {
 			if (res) {
 				setItemDetail(res.data);
 
-				console.log("item", item);
-				console.log("itemDetail", res.data);
 			}
 		} catch (error) {
 			console.log(error);

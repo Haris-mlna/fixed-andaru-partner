@@ -150,13 +150,16 @@ const Home = () => {
                         {loading ? (
                             <SkeletonFeeds />
                         ) : (
-                            feed.length > 0 && (
+                            feed.length > 0 ? (
                                 <>
                                     {feed.map(item => (
                                         <Feed item={item} key={item.Id} />
                                     ))}
                                 </>
-                            )
+                            ) : 
+                            <div>
+                                
+                            </div>
                         )}
                         <div
                             id='load-more'
@@ -167,7 +170,7 @@ const Home = () => {
                                 </div>
                             )}
                             {!hasMore && (
-                                <div className='w-full h-20 flex justify-center items-center'>
+                                <div className='w-full h-20 flex justify-center items-center text-sm text-neutral-400'>
                                     You have reached the bottom of the feeds.
                                 </div>
                             )}

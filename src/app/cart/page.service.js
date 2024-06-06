@@ -138,7 +138,7 @@ export const loadAddress = async param => {
 	}
 };
 
-export const actionCheckout = async (param) => {
+export const actionCheckout = async param => {
 	try {
 		const body = {
 			actionController: "OrdersController",
@@ -146,7 +146,7 @@ export const actionCheckout = async (param) => {
 			actionParam: param,
 		};
 
-		const res = Client.post('/action', body)
+		const res = Client.post("/action", body);
 
 		return res;
 	} catch (error) {
@@ -155,4 +155,18 @@ export const actionCheckout = async (param) => {
 	}
 };
 
+export const deleteItemCart = async param => {
+	const body = {
+		actionController: "OrdersController",
+		actionName: "DeleteCartItems",
+		actionParam: param,
+	};
 
+	try {
+		const res = Client.post("/action", body);
+
+		return res;
+	} catch (err) {
+		return err;
+	}
+};

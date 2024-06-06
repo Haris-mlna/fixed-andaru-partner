@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const CartList = (props, key) => {
-	const { data } = props;
+	const { data, deleteMode, handleSelectItem } = props;
 
 	return (
 		<li
@@ -21,13 +21,18 @@ export const CartList = (props, key) => {
 						<p className='text-xs m-0 p-0'>{data.SizeName}&quot;</p>
 					</div>
 					<div className=''>
-						<p className="text-sm font-light">{moment(data.InsertStamp).fromNow()}</p>
+						<p className='text-sm font-light'>
+							{moment(data.InsertStamp).fromNow()}
+						</p>
 					</div>
 				</div>
 			</div>
 			<div className='absolute min-w-20 pl-1 py-1 top-2 right-2 text-xs bg-blue-500 text-white flex justify-center items-center rounded-full'>
 				{data.QuantityUom1} {data.Uom1Label}
 			</div>
+			{deleteMode ? <input type='checkbox' onChange={() => {
+				handleSelectItem(data)
+			}} className=" absolute bottom-2 right-2" name='' id='' /> : null}
 		</li>
 	);
 };

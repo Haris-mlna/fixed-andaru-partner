@@ -195,7 +195,7 @@ const Landing = () => {
 									width={3864}
 									height={1152}
 									style={{
-										width : 400
+										width: 400,
 									}}
 									className=' h-full'
 								/>

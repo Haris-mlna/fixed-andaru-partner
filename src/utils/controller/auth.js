@@ -16,15 +16,22 @@ const AuthServices = {
 			};
 
 			const res2 = await ClientAuth.post(API.auth, body);
-			const token = await res2.text();
-			const decoded = jwtDecode(token);
-			window.localStorage.setItem("apiURL", decoded.APIUrl);
-      window.localStorage.setItem("token", token);
 
-			return token;
+			if (res2.status === 200) {
+				const token = await res2.text();
+				if (token) {
+					const decoded = jwtDecode(token);
+					window.localStorage.setItem("apiURL", decoded.APIUrl);
+					window.localStorage.setItem("token", token);
+					return token;
+				}
+			} else {
+				console.log(res2);
+
+				return res2;
+			}
 		} catch (error) {
-			console.error("Login failed:", error);
-			throw error;
+			return error;
 		}
 	},
 };

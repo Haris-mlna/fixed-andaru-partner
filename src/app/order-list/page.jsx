@@ -105,7 +105,7 @@ const OrderList = () => {
 	return (
 		<div className='w-full h-screen flex'>
 			<Sidebar />
-			{(loading || cancelLoading) && (
+			{cancelLoading && (
 				<div
 					style={{
 						zIndex: 1000,
@@ -124,8 +124,8 @@ const OrderList = () => {
 					<div className='w-full h-12 flex items-center px-4 bg-white shadow-sm'>
 						Order List
 					</div>
-					<div className='p-4 flex'>
-						{selected && selected?.length > 0 && (
+					{selected && selected?.length > 0 && (
+						<div className='p-4 flex'>
 							<button
 								className='p-1 px-8 text-red-500 bg-red-100 border border-red-300 rounded flex gap-1 items-center'
 								onClick={handleCancelOrder}
@@ -133,8 +133,8 @@ const OrderList = () => {
 								<GoTrash />
 								Cancel Orders
 							</button>
-						)}
-					</div>
+						</div>
+					)}
 					<div className='w-full'>
 						<TableOrderList
 							rows={list}

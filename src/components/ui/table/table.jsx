@@ -232,6 +232,21 @@ export default function EnhancedTable({
 		[order, orderBy, page, rowsPerPage]
 	);
 
+	const getStatusClass = status => {
+		switch (status) {
+			case "Draft":
+				return "text-blue-500";
+			case "Delivered":
+				return "text-teal-500";
+			case "OnTheWay":
+				return "text-orange-500";
+			case "NotDelivered":
+				return "text-red-500";
+			default:
+				return "";
+		}
+	};
+
 	return (
 		<Box sx={{ width: "100%" }}>
 			<Paper sx={{ width: "100%" }}>
@@ -273,7 +288,6 @@ export default function EnhancedTable({
 												key={headCell.id}
 												align={headCell.numeric ? "right" : "left"}
 												className="font-outfit"
-												// Applying styles to the TableCell rendering the address
 												sx={{
 													whiteSpace: "nowrap",
 													overflow: "hidden",
@@ -285,6 +299,10 @@ export default function EnhancedTable({
 													</div>
 												) : headCell.id === "DueDate" ? (
 													<div>{moment(row[headCell.id]).format("ll")}</div>
+												) : headCell.id === "Status" ? (
+													<div className={getStatusClass(row[headCell.id])}>
+														{row[headCell.id]}
+													</div>
 												) : (
 													row[headCell.id]
 												)}

@@ -34,26 +34,27 @@ export const handleLogin = async props => {
 					return "ok";
 				}
 			} catch (error) {
+				console.log(error.status)
 				if (error.status === 500) {
 					setMessages({
 						text: `Kejadi kesalahan pada server , error status : ${error.status}`,
-						error: "danger",
+						error: "error",
 					});
 				}
 				if (error.status === 403) {
 					setMessages({
 						text: "Username dan password salah!",
-						error: "danger",
+						error: "error",
 					});
 				} else if (error.status === 401) {
 					setMessages({
 						text: "Username atau password salah!",
-						error: "danger",
+						error: "error",
 					});
 				} else {
 					setMessages({
 						text: `Error messages : ${error.message}`,
-						error: "danger",
+						error: "error",
 					});
 				}
 			} finally {
@@ -62,13 +63,13 @@ export const handleLogin = async props => {
 		} else {
 			setMessages({
 				text: "Username tidak valid!",
-				error: "warning",
+				error: "error",
 			});
 		}
 	} else {
 		setMessages({
 			text: "Isi email dan password dengan benar!",
-			error: "warning",
+			error: "error",
 		});
 	}
 };

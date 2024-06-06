@@ -50,6 +50,12 @@ const headCells = [
 		label: "Total Tagihan",
 	},
 	{
+		id: "Status",
+		numeric: true,
+		disablePadding: false,
+		label: "Status",
+	},
+	{
 		id: "PayedAmount",
 		numeric: true,
 		disablePadding: false,
@@ -339,8 +345,15 @@ export default function DataTable(props) {
 											</TableCell>
 											<TableCell
 												align='right'
-												className='text-teal-400 font-outfit'>
-												+{formatCurrency(row?.PayedAmount)}
+												className={`font-outfit ${
+													row?.Status === "Payed"
+														? "text-teal-400"
+														: "text-blue-500"
+												}`}>
+												{row?.Status}
+											</TableCell>
+											<TableCell align='right' className={` font-outfit`}>
+												{formatCurrency(row?.PayedAmount)}
 											</TableCell>
 										</TableRow>
 									);

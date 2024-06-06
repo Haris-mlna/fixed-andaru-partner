@@ -18,7 +18,6 @@ const Invoices = () => {
 
 			if (res) {
 				setList(res.data);
-				console.log(res);
 			}
 		} catch (error) {}
 	};

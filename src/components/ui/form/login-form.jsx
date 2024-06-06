@@ -19,6 +19,15 @@ const LoginForm = ({ setOpen, open }) => {
 	const [remember, setRemember] = React.useState(false);
 
 	React.useEffect(() => {
+		if (messages) {
+			Swal.fire({
+				icon: messages?.error,
+				text: messages?.text,
+			});
+		}
+	}, [messages]);
+
+	React.useEffect(() => {
 		const emailLocal = sessionStorage.getItem("use");
 		const passwordLocal = sessionStorage.getItem("pass");
 		const localRemember = sessionStorage.getItem("rem");

@@ -80,11 +80,14 @@ export const ModalPost = ({ open, setOpen, setUpdate, update }) => {
 				});
 
 				handleClose();
+				setTimeout(() => {
+					window.location.reload()
+				},1500)
 				setUpdate(!update);
 			}
 		} catch (error) {}
 
-		console.log(body);
+		// console.log(body);
 	};
 
 	return (

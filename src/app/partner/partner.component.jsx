@@ -1,11 +1,18 @@
 import * as React from "react";
 import { useUser } from "../../context/user/user-context";
-import { loadAllPartner, loadPartner } from "./page.service";
+import {
+	alreadyPartner,
+	incomingRequest,
+	loadAllPartner,
+	loadPartner,
+	pendingRequest,
+} from "./page.service";
 import Swal from "sweetalert2";
 import {
 	PartnerCard,
 	PartnerListCard,
 } from "../../components/ui/card/card.partner";
+import { ModalAddPartner } from "../../components/ui/modal/modal-addpartner";
 
 const PartnerComponents = () => {
 	const { user } = useUser();
@@ -26,14 +33,15 @@ const PartnerComponents = () => {
 		},
 	});
 
+	const [selectedPartner, setSelectedPartner] = React.useState(null);
+	const [open, setOpen] = React.useState(false);
+
 	const [pages, setPages] = React.useState(1);
 	const [pagesAll, setPagesAll] = React.useState(1);
 
 	const fetchData = async (id, page) => {
 		try {
 			const res = await loadPartner(id, page);
-
-			console.log(res);
 
 			if (res) {
 				setListpartner(res.data);
@@ -47,22 +55,36 @@ const PartnerComponents = () => {
 		}
 	};
 
-	const fetchAllPartner = async (filter, page) => {
-		let criteriaOrders = [];
-		for (var key in filter) {
-			criteriaOrders.push(filter[key]);
-
-			var newFilter = criteriaOrders.filter(function (el) {
-				return el.Value != "" && el.Value != null && el.Value != "%%";
-			});
-			criteriaOrders = newFilter;
-		}
-
+	const fetchAllPartner = async (filter, page, id) => {
 		try {
-			const res = await loadAllPartner(page, criteriaOrders);
+			const res = await loadAllPartner(page);
 
-			if (res) {
-				setAllpartner(res.data);
+			const friendRes = await alreadyPartner(id);
+			const requestRes = await incomingRequest(id);
+			const waitingRes = await pendingRequest(id);
+
+			const friendIds = friendRes.data.map(friend => friend.PeerPartnerId);
+			const requestIds = requestRes.data.map(req => req.PartnerId);
+			const waitingIds = waitingRes.data.map(wait => wait.RequesterId);
+
+			const updatedList = res.data.map(item => {
+				let relation = "not partner";
+
+				if (friendIds.includes(item.Id)) {
+					relation = "partner";
+				} else if (requestIds.includes(item.Id)) {
+					relation = "already added";
+				} else if (waitingIds.includes(item.Id)) {
+					relation = "requested";
+				} else if (item.Id === user.OrganizationId) {
+					relation = "self";
+				}
+
+				return { ...item, relation };
+			});
+
+			if (updatedList) {
+				setAllpartner(updatedList);
 			}
 		} catch (error) {
 			Swal.fire({
@@ -75,7 +97,7 @@ const PartnerComponents = () => {
 
 	React.useEffect(() => {
 		if (user) {
-			fetchAllPartner(filter, pagesAll);
+			fetchAllPartner(filter, pagesAll, user?.OrganizationId);
 		}
 	}, [filter, user]);
 
@@ -84,6 +106,11 @@ const PartnerComponents = () => {
 			fetchData(user?.OrganizationId, pages);
 		}
 	}, [user, pages]);
+
+	const handleSelectPartner = partner => {
+		setSelectedPartner(partner);
+		setOpen(true);
+	};
 
 	return (
 		<div className='w-full'>
@@ -104,7 +131,6 @@ const PartnerComponents = () => {
 			<div className='w-full border-b-2 py-3'>
 				<p className='font-semibold text-teal-500'>CARI PARTNER ANDA</p>
 			</div>
-
 			<div className=' py-4 w-full'>
 				<div className='w-full h-10 p-2 flex border rounded-full'>
 					<input
@@ -119,12 +145,22 @@ const PartnerComponents = () => {
 					? allpartner.map(item => {
 							return (
 								<div key={item.Id}>
-									<PartnerListCard partner={item} />
+									<PartnerListCard
+										partner={item}
+										handleSelectPartner={handleSelectPartner}
+									/>
 								</div>
 							);
 					  })
 					: null}
 			</div>
+			{open && (
+				<ModalAddPartner
+					open={open}
+					setOpen={setOpen}
+					partner={selectedPartner}
+				/>
+			)}
 		</div>
 	);
 };

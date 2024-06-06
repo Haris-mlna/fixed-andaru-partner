@@ -21,7 +21,7 @@ export default function TableOrderList(props) {
 
 	// Ensure rows array has at least 10 items
 	const displayRows =
-		rows.length < 10 ? [...rows, ...createEmptyRows(10 - rows.length)] : rows;
+		rows.length < 10 ? [...rows] : rows;
 
 	const columns = [
 		{ field: "OrderNumber", headerName: "Order Number", flex: 1 },
@@ -66,7 +66,7 @@ export default function TableOrderList(props) {
 		const selectedRows = newRowSelectionModel.map(id =>
 			displayRows.find(row => row.id === id)
 		);
-		setSelected(selectedRows);
+		setSelected(newRowSelectionModel);
 	};
 
 	return (

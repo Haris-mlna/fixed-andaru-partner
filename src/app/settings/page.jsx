@@ -9,8 +9,20 @@ import { Settingsaccount } from "./account.component";
 import { CircularProgress } from "@mui/material";
 
 const Settings = () => {
-	const [settings, setSettings] = React.useState("Account");
+	const { userData, companyData } = useUser();
+	const [userType, setUserType] = React.useState(false);
+	const [settings, setSettings] = React.useState(
+		userType ? "Account" : "Company"
+	);
 	const [loading, setLoading] = React.useState(false);
+
+	React.useEffect(() => {
+		if (!userData) {
+			setUserType(false);
+		} else {
+			setUserType(true);
+		}
+	}, [userData]);
 
 	return (
 		<div className='flex w-full h-screen relative'>
@@ -25,18 +37,20 @@ const Settings = () => {
 			)}
 			<Sidebar />
 			<div className=' w-64 h-full bg-white border-r-2 p-4'>
-				<button
-					className={`w-full py-2 px-4 flex
+				{userType ? (
+					<button
+						className={`w-full py-2 px-4 flex
                     ${
 											settings === "Account" &&
 											"bg-blue-200 rounded text-blue-500"
 										}
                     `}
-					onClick={() => {
-						setSettings("Account");
-					}}>
-					Account
-				</button>
+						onClick={() => {
+							setSettings("Account");
+						}}>
+						Account
+					</button>
+				) : null}
 				<button
 					className={` w-full py-2 px-4 flex
                         ${

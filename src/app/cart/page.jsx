@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useUser } from "../../context/user/user-context";
 import {
 	actionCheckout,
+	deleteItemCart,
 	loadAddress,
 	loadCart,
 	loadCartId,
@@ -20,6 +21,7 @@ import { BsBoxes, BsTrash } from "react-icons/bs";
 import { FaTruckLoading } from "react-icons/fa";
 import {
 	Box,
+	CircularProgress,
 	FormControl,
 	InputLabel,
 	MenuItem,
@@ -37,6 +39,8 @@ import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import moment from "moment";
+import { IoMdArrowBack } from "react-icons/io";
+import { TbArrowBackUp } from "react-icons/tb";
 
 const Cart = () => {
 	const { user } = useUser();
@@ -54,7 +58,7 @@ const Cart = () => {
 
 	// Loading State
 	const [loading, setLoading] = React.useState(false);
-	const [loadingCheckout, setLoadingCheckout] = React.useState(false)
+	const [loadingCheckout, setLoadingCheckout] = React.useState(false);
 
 	// Input
 	const [cleared, setCleared] = React.useState(false);
@@ -62,6 +66,13 @@ const Cart = () => {
 
 	// Change Layer
 	const [change, setChange] = React.useState(false);
+
+	// DELETE
+	const [deleteMode, setDeleteMode] = React.useState(false);
+	const [selectedItem, setSelectedItem] = React.useState([]);
+
+	// UPDATE
+	const [update, setUpdate] = React.useState(false);
 
 	const fetchCartId = async () => {
 		try {
@@ -105,6 +116,7 @@ const Cart = () => {
 
 	const fetchSubsidaries = async () => {
 		try {
+			setLoading(true);
 			const res = await loadSubsidiaries(user.OrganizationId);
 
 			if (res) {
@@ -124,11 +136,14 @@ const Cart = () => {
 				text: "Terjadi kesalahan saat memuat customer",
 				width: 300,
 			});
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	const fetchAddress = async () => {
 		try {
+			setLoading(true);
 			const res = await loadAddress(selectedCustomer);
 
 			if (res) {
@@ -150,6 +165,8 @@ const Cart = () => {
 				text: "Terjadi kesalahan saat memuat alamat customer",
 				width: 300,
 			});
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -167,7 +184,7 @@ const Cart = () => {
 				fetchCartList();
 			}
 		}
-	}, [user]);
+	}, [user, update]);
 
 	React.useEffect(() => {
 		if (window) {
@@ -202,6 +219,8 @@ const Cart = () => {
 	});
 
 	const handleCheckout = async () => {
+		setLoadingCheckout(true);
+
 		const body = {
 			SupplierId: cartId.SupplierId,
 			OrderCartId: cartId.Id,
@@ -216,10 +235,18 @@ const Cart = () => {
 				Swal.fire({
 					title: "Checkout order berhasil!",
 					timer: 1000,
+					width: 300,
 					timerProgressBar: true,
 				});
+				setUpdate(!update);
+				setTimeout(() => {
+					window.location.reload();
+				}, 600);
 			}
-		} catch (error) {}
+		} catch (error) {
+		} finally {
+			setLoadingCheckout(false);
+		}
 	};
 
 	const handleChangeAddress = date => {
@@ -229,8 +256,60 @@ const Cart = () => {
 		}
 	};
 
+	const handleDeleteCart = async () => {
+		if (selectedItem.length !== 0) {
+			const param = {
+				IdList: selectedItem,
+			};
+
+			try {
+				setLoading(true);
+
+				const res = await deleteItemCart(param);
+
+				if (res) {
+					Swal.fire({
+						title: "Success!",
+						text: "Barang di hapus dari keranjang",
+						icon: "success",
+						width: 300,
+					});
+					setUpdate(!update);
+					setDeleteMode(false);
+				}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				setLoading(false);
+			}
+		} else {
+			Swal.fire({
+				title: "Error!",
+				text: "Pilih pesanan yang mau dihapus",
+				icon: "error",
+				timer: 1000,
+				timerProgressBar: true,
+				width: 300,
+			});
+		}
+	};
+
+	const handleSelectItem = item => {
+		const index = selectedItem.indexOf(item.Id);
+		if (index === -1) {
+			setSelectedItem(prev => [...prev, item.Id]);
+		} else {
+			setSelectedItem(prev => prev.filter(itemId => itemId !== item.Id));
+		}
+	};
+
 	return (
 		<div className='w-full h-screen flex'>
+			{loading && (
+				<div className='w-full h-screen fixed top-0 left-0 bg-black/40 flex justify-center items-center z-50'>
+					<CircularProgress size={20} sx={{ color: "white" }} />
+				</div>
+			)}
 			<Sidebar />
 			<div className='flex flex-col w-full h-full relative'>
 				<header className='w-full h-16 flex px-4 items-center shadow bg-white z-10'>
@@ -519,11 +598,7 @@ const Cart = () => {
 									</div>
 
 									<button
-										style={{
-											background:
-												"linear-gradient(108.32deg, #62CDCB 24.88%, #4599DB 78.49%)",
-										}}
-										className={`w-full h-full max-h-20 rounded text-white ${styles.primary_button}`}
+										className={`w-full h-12 bg-gradient-to-br from-indigo-500 to-blue-400 rounded text-white ${styles.primary_button}`}
 										onClick={handleCheckout}>
 										<div
 											className={`z-10 text-white ${styles.text} transition-all duration-150`}>
@@ -539,9 +614,26 @@ const Cart = () => {
 							<h1 className='w-full relative h-12 flex justify-center items-center shadow-sm text-2xl text-blue-500 font-light'>
 								List item
 								<BsBoxes className=' absolute left-4' />
-								<button className='absolute right-4'>
-									<BsTrash className='text-red-500' />
-								</button>
+								<div className='flex items-center gap-2 absolute right-4'>
+									<button
+										className=''
+										onClick={() => {
+											setDeleteMode(!deleteMode);
+										}}>
+										{deleteMode ? (
+											<TbArrowBackUp />
+										) : (
+											<BsTrash className='text-red-500' />
+										)}
+									</button>
+									{deleteMode ? (
+										<button
+											className='text-sm text-white bg-red-500 px-4 p-1 rounded'
+											onClick={handleDeleteCart}>
+											Hapus
+										</button>
+									) : null}
+								</div>
 							</h1>
 
 							{/* CART LIST */}
@@ -553,7 +645,12 @@ const Cart = () => {
 								{cart.length > 0 && (
 									<ul className=' w-full h-full flex flex-col gap-2 p-2 bg-white bg-opacity-30 rounded border overflow-y-auto border-slate-50'>
 										{cart.map((item, index) => (
-											<CartList data={item} key={index} />
+											<CartList
+												data={item}
+												key={index}
+												deleteMode={deleteMode}
+												handleSelectItem={handleSelectItem}
+											/>
 										))}
 									</ul>
 								)}

@@ -25,13 +25,13 @@ const OrderDetail = () => {
 	const [cancelLoading, setCancelLoading] = React.useState(false);
 
 	React.useEffect(() => {
-		if (!detail && !detailList) {
+		if (!detail || !detailList) {
 			router.replace("/order-list");
 		}
 	}, [detail, detailList, router]);
 
 	if (!detail || !detailList) {
-		return router.replace("/order-list"); // Render nothing while redirecting
+		return null
 	}
 
 	const handleNumericInputChange = (value, itemId, fieldName) => {
@@ -100,7 +100,6 @@ const OrderDetail = () => {
 					"Failed to cancel quantity. Please try again.",
 					"error"
 				);
-				console.log("the hec is this", error);
 			} finally {
 				setCancelLoading(false);
 			}
@@ -175,10 +174,10 @@ const OrderDetail = () => {
 									console.log(detailList);
 								}}>
 								<div className='w-full h-full items-center flex p-2 gap-2 text-white'>
-									<MdOutlineTouchApp size={48} />
+									{/* <MdOutlineTouchApp size={48} /> */}
 									<div className='flex flex-col'>
-										<p className='text-xs'>Faktur/Tanda Terima</p>
-										<p className='text-bold text-left'>LIHAT</p>
+										<p className=''>Tabel Item pesanan</p>
+										{/* <p className='text-bold text-left'>LIHAT</p> */}
 									</div>
 								</div>
 							</button>
@@ -186,7 +185,7 @@ const OrderDetail = () => {
 
 						<div className='mt-4'>
 							<div className='w-full flex items-center justify-between'>
-								<h4>List Item</h4>
+								{/* <h4>List Item</h4> */}
 								<div className='flex gap-1'>
 									<button
 										className='flex gap-1 items-center text-red-500 bg-white shadow p-1 px-2 rounded-sm'
@@ -284,7 +283,7 @@ const OrderDetail = () => {
 												{deleteMode ? (
 													<input
 														type='text'
-														className='max-w-20 border border-neutral-400'
+														className='max-w-20 border border-neutral-400 px-2 text-sm p-1'
 														value={
 															cancelForm.find(f => f.ItemId === item.Id)
 																?.CanceledQuantity1 || 0
@@ -305,7 +304,7 @@ const OrderDetail = () => {
 												{deleteMode ? (
 													<input
 														type='text'
-														className='max-w-20 border border-neutral-400'
+														className='max-w-20 border border-neutral-400 px-2 text-sm p-1'
 														value={
 															cancelForm.find(f => f.ItemId === item.Id)
 																?.CanceledQuantity2 || 0

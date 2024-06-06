@@ -101,8 +101,6 @@ const Product = () => {
 			QuantityUom2: quantity2 !== "" ? quantity2 : null,
 		};
 
-		console.log(body);
-
 		try {
 			const res = await actionCart(body);
 			if (res) {
@@ -177,7 +175,6 @@ const Product = () => {
 			target: { value },
 		} = event;
 
-		console.log(value);
 		setSelectedUOM(value);
 	};
 
@@ -312,7 +309,7 @@ const Product = () => {
 				</div>
 
 				<div className='w-full p-4 flex flex-col gap-4'>
-					<h4>Produk lain dari {productDetail?.ManufactureName} :</h4>
+					<h4>Produk lain dari <b>{productDetail?.ManufactureName}</b> :</h4>
 					<div className='w-full'>
 						<Pagination
 							count={totalPages}

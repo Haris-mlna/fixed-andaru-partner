@@ -25,7 +25,6 @@ export const Settingsaddress = () => {
       const res = await loadAddress(id);
 
       if (res) {
-        console.log(res);
         setListaddress(res.data);
       }
     } catch (error) {
@@ -71,8 +70,6 @@ export const Settingsaddress = () => {
       const res = await addAddress(param);
       if (res) {
         setUpdateData(!updateData);
-        // Lakukan sesuatu dengan respons jika perlu
-        console.log("Alamat berhasil ditambahkan:", res);
         // Ambil data ulang setelah menambahkan alamat baru
         fetchData(user.OrganizationId);
       }
@@ -102,7 +99,6 @@ export const Settingsaddress = () => {
       // Mengirim array ID yang dipilih ke fungsi deleteAddresses
       const res = await deleteAddresses(selectedAddresses);
       if (res) {
-        console.log("Alamat berhasil dihapus:", res);
         fetchData(user.OrganizationId); // Ambil data ulang setelah menghapus alamat
         setShowCheckboxes(false); // Sembunyikan checkbox setelah menghapus
       }

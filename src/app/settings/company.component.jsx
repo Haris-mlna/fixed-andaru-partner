@@ -92,7 +92,7 @@ export const Settingscompany = props => {
 			const res = await editCompany(body);
 
 			if (res) {
-				console.log(res);
+				// console.log(res);
 			}
 		} catch (error) {
 			console.log(error);

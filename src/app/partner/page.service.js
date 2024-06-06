@@ -24,13 +24,12 @@ export const loadPartner = async (id, page) => {
 	}
 };
 
-export const loadAllPartner = async (page, filter) => {
+export const loadAllPartner = async (page) => {
 	const body = {
 		modelName: "partners",
 		maximumResult: 20,
 		pageNumber: page,
 		sortList: ["ProfileImagePartner desc"],
-		criteriaList: filter,
 	};
 
 	try {
@@ -99,3 +98,74 @@ export const confirmationAwait = async id => {
 		return err;
 	}
 };
+
+export const alreadyPartner = async id => {
+	const body = {
+		modelName: "partnerlinks",
+		fieldNames: ["PeerPartnerId"],
+		sortList: ["PeerPartnerId asc"],
+		criteriaList: [
+			{
+				propertyName: "PartnerId",
+				operator: "=",
+				value: id,
+			},
+		],
+	};
+
+	try {
+		const res = await getList(body, "/getlist");
+
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const incomingRequest = async (id) => {
+	const body = {
+		modelName: "partnerrequests",
+		criteriaList: [
+			{
+				propertyName: "requesterId",
+				operator: "=",
+				value: id
+			},
+		],
+	};
+
+	try {
+		const res = await getList(body, '/getlist')
+
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export const pendingRequest = async (id) => {
+	const body = {
+		modelName: "partnerrequests",
+		// fieldNames : ["RequesterId"],
+		criteriaList: [
+			{
+				propertyName: "PartnerId",
+				operator: "=",
+				value: id
+			},
+			{
+				propertyName: 'Status',
+				operator: "!=",
+				value: "Rejected"
+			}
+		],
+	};
+
+	try {
+		const res = await getList(body, '/getlist')
+
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
