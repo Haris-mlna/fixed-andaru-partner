@@ -47,6 +47,10 @@ export const loadCart = async customerId => {
 
 		const res = await getSingle(body, "/getsingle");
 
+		if (res.status === 204) {
+			return [];
+		}
+
 		if (res) {
 			const itemsBody = {
 				modelName: "ordercartitems",

@@ -1,19 +1,21 @@
 "use client";
 
 import * as React from "react";
+import styles from "./page.module.css";
 import Image from "next/image";
 import Sidebar from "../../components/layout/sidebar/sidebar";
 import ButtonMessage from "../../components/ui/button/button-message";
 import FilterMarket from "../../components/ui/filter/market/filter-market";
 import { useProduct } from "../../context/product/product-context";
 import { motion } from "framer-motion";
-import blob from "../../assets/background/blob-scene.svg";
+import blob from "../../assets/images/Banner.jpg";
 import { Pagination } from "@mui/material";
 import { getListProduct } from "./page.service";
 import { useUser } from "../../context/user/user-context";
 import { useRouter } from "next/navigation";
 import { useSidebar } from "../../context/sidebar/sidebar-context";
 import SkeletonProduct from "../../components/skeleton/product/product-skeleton";
+import ModalAlternativeOrder from "../../components/ui/modal/modal-alternative-order";
 
 const Market = () => {
 	const router = useRouter();
@@ -23,6 +25,7 @@ const Market = () => {
 	const [pages, setPages] = React.useState(1);
 	const [totalpages, setTotalPages] = React.useState(1);
 	const [loading, setLoading] = React.useState(false);
+	const [openModal, setOpenModal] = React.useState(false);
 
 	const [filter, setFilter] = React.useState({
 		Category: {
@@ -91,7 +94,9 @@ const Market = () => {
 
 	const handleSelect = item => {
 		setProductDetail(item);
-		router.push("/market/product");
+		setTimeout(() => {
+			router.push("/market/product");
+		}, 100);
 	};
 
 	const handlePageChange = (event, value) => {
@@ -142,16 +147,16 @@ const Market = () => {
 					</motion.h1>
 				</div>
 				<div className='w-full flex flex-col bg-white'>
-					<header className='w-full h-96 flex flex-col flex-shrink-0 shadow z-10 relative justify-center items-center bg-gradient-to-br from-sky-50 to-indigo-50'>
+					<header className='w-full h-[540px] flex flex-col flex-shrink-0 shadow z-10 relative justify-center items-center bg-gradient-to-br from-sky-50 to-indigo-50'>
 						<Image
 							src={blob}
-							width={4000}
+							width={4160}
 							height={2000}
 							alt='bg-katalog'
-							className='object-cover w-full h-full absolute opacity-40'
+							className='object-cover w-full h-full absolute'
 							priority
 						/>
-						<div className=' p-4 z-10 mb-4 bg-white rounded shadow'>
+						{/* <div className=' p-4 z-10 mb-4 bg-white rounded shadow'>
 							<motion.h1 className='text-2xl text font-bold tracking-wide bg-gradient-to-br from-sky-500 to-black text-transparent bg-clip-text'>
 								MANFAATKAN KESEMPATAN BELANJA DI BISNIS PARTNER!
 								<br />
@@ -163,7 +168,7 @@ const Market = () => {
 						<h1 className='text-center text-black font-black text-3xl z-10'>
 							#BERSAMA<span className='text-red-500'>PASTI</span>
 							<br />#<span className='text-red-500'>PASTI</span>SUKSES!
-						</h1>
+						</h1> */}
 					</header>
 					<FilterMarket
 						handleFindProduct={handleFindProduct}
@@ -178,7 +183,7 @@ const Market = () => {
 						/>
 						{loading ? (
 							<SkeletonProduct />
-						) : (
+						) : product.length > 0 ? (
 							<div className='flex flex-wrap gap-2 mt-2'>
 								{product.map((item, index) => (
 									<motion.button
@@ -212,10 +217,29 @@ const Market = () => {
 									</motion.button>
 								))}
 							</div>
+						) : (
+							<div className='w-full h-96 flex justify-center items-center'>
+								<div className='flex flex-col justify-center items-center'>
+									<p className='text-sm text-neutral-500'>
+										Produk yang anda cari tidak ditemukan? buat pesanan dengan
+										memasukan nama produk
+									</p>
+									<button
+										className={`${styles.button} mt-4`}
+										onClick={() => {
+											setOpenModal(true);
+										}}>
+										Buat pesanan alternative
+									</button>
+								</div>
+							</div>
 						)}
 					</section>
 				</div>
 			</div>
+			{openModal && (
+				<ModalAlternativeOrder open={openModal} setOpen={setOpenModal} />
+			)}
 		</div>
 	);
 };

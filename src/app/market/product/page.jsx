@@ -36,7 +36,7 @@ const Product = () => {
 
 	React.useEffect(() => {
 		if (productDetail === null) {
-			router.push("/market");
+			// router.push("/market");
 		} else {
 			const fetchData = async () => {
 				try {
