@@ -41,7 +41,7 @@ const UserCard = props => {
 						width={200}
 						height={200}
 						alt='User Profile Picture'
-						className={` object-cover  rounded-full shadow-md ${
+						className={` object-contain  rounded-full shadow-md ${
 							open ? "w-16 h-16" : " w-14 h-14 border border-slate-400"
 						}`}
 					/>

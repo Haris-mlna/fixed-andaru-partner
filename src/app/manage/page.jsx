@@ -110,14 +110,14 @@ const Manage = () => {
 										{companyData?.CompanyTitleLabel} {companyData?.Name}
 									</h3>
 								</div>
-								<div className='w-96 h-56 bg-slate-500 rounded overflow-hidden'>
+								<div className='w-96 h-56 bg-slate-50 rounded overflow-hidden'>
 									{companyData?.ProfileImagePartner && (
 										<Image
 											src={`data:image/png;base64,${companyData.ProfileImagePartner}`}
 											alt='Company Profile'
 											width={400}
 											height={400}
-											className='w-full h-full object-cover'
+											className='w-full h-full object-contain'
 										/>
 									)}
 								</div>

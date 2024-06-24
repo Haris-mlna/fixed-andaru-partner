@@ -10,15 +10,6 @@ export default function TableOrderList(props) {
 
 	const [rowSelectionModel, setRowSelectionModel] = useState([]);
 
-	// Function to create empty rows
-	const createEmptyRows = count => {
-		let emptyRows = [];
-		for (let i = 0; i < count; i++) {
-			emptyRows.push({ id: `empty-${i}`, isEmpty: true });
-		}
-		return emptyRows;
-	};
-
 	// Ensure rows array has at least 10 items
 	const displayRows =
 		rows.length < 10 ? [...rows] : rows;

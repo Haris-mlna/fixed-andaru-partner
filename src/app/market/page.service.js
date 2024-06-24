@@ -4,7 +4,7 @@ export const getListProduct = async (page, filter) => {
 	const body = {
 		modelName: "products",
 		pageNumber: page,
-		maximumResult: 15,
+		maximumResult: 16,
 		sortList: [`Id asc`],
 		criteriaList: filter,
 	};

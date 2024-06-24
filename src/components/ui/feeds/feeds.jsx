@@ -1,5 +1,6 @@
 import Image from "next/image";
 import moment from "moment";
+import building from "../../../assets/images/buildings.png";
 
 const Feed = props => {
 	const { item } = props;
@@ -10,13 +11,23 @@ const Feed = props => {
 	return (
 		<div className='w-full bg-white'>
 			<div className='w-full flex gap-2 py-4 px-2'>
-				<Image
-					src={imageDataUrl}
-					width={100}
-					height={100}
-					className='w-14 h-14 h object-cover rounded-full'
-					alt={item.Id}
-				/>
+				{item?.PublisherImage ? (
+					<Image
+						src={imageDataUrl}
+						width={100}
+						height={100}
+						className='w-14 h-14 h object-contain rounded-full'
+						alt={item.Id}
+					/>
+				) : (
+					<Image
+						src={building}
+						width={100}
+						height={100}
+						className='w-14 h-14 h object-contain rounded-full'
+						alt={item.Id}
+					/>
+				)}
 				<div className='flex flex-col'>
 					<p>{item.PublisherName}</p>
 					<p className='text-sm text-slate-400 font-light'>
@@ -33,7 +44,7 @@ const Feed = props => {
 						src={imageContentUrl}
 						width={1440}
 						height={900}
-						className='w-full h-auto rounded'
+						className='w-full h-auto rounded object-contain'
 						alt={item.Id}
 					/>
 				</div>

@@ -6,6 +6,8 @@ import FeedProvider from "../context/feed/feed-context";
 import ProductProvider from "../context/product/product-context";
 import SidebarProvider from "../context/sidebar/sidebar-context";
 import OrderDetailProvider from "../context/order-detail/order-detail";
+import DeliveryDetailProvider from "../context/delivery-detail/delivery-detail";
+import DeliveryListProvider from "../context/delivery-list/delivery-list";
 
 export const metadata = {
 	title: "Andaru Business Partner",
@@ -32,7 +34,11 @@ export default function RootLayout({ children }) {
 					<ProductProvider>
 						<SidebarProvider>
 							<OrderDetailProvider>
-								<body>{children}</body>
+								<DeliveryDetailProvider>
+									<DeliveryListProvider>
+										<body>{children}</body>
+									</DeliveryListProvider>
+								</DeliveryDetailProvider>
 							</OrderDetailProvider>
 						</SidebarProvider>
 					</ProductProvider>

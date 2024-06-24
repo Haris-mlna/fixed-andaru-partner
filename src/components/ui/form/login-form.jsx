@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { CircularProgress } from "@mui/material";
 import { FaRegUser } from "react-icons/fa6";
 import { IoKeyOutline } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 
 const LoginForm = ({ setOpen, open }) => {
 	const { setUser, user } = useUser();
@@ -105,11 +106,11 @@ const LoginForm = ({ setOpen, open }) => {
 					}}
 					style={{
 						width: 360,
-						height: 500,
+						height: 420,
 					}}
 					className='bg-white/40 p-1 rounded flex flex-col'>
 					<form
-						className='w-full h-full bg-white rounded flex flex-col items-center justify-center p-4'
+						className='w-full h-full bg-white rounded flex flex-col items-center justify-center p-4 relative gap-2'
 						onSubmit={handleSubmit}>
 						<div className='border-b-2 pb-2 mb-4 w-full'>
 							<h4 className=' text-2xl font-semibold text-neutral-500 '>
@@ -176,23 +177,23 @@ const LoginForm = ({ setOpen, open }) => {
 								</p>
 							</div>
 						</div>
-						<div className='border-t-2 pt-2 mt-4 w-full'>
+						<div className=' pt-2 w-full'>
 							<button
 								onClick={handleSubmit}
-								className='w-full mt-4 h-10 bg-gradient-to-br from-indigo-600 to-blue-500 text-white rounded'>
+								className='w-full mt-4 h-10 bg-gradient-to-br from-indigo-500 to-blue-400 text-white rounded'>
 								{loading ? (
 									<CircularProgress size={12} sx={{ color: "white" }} />
 								) : (
 									"Login"
 								)}
 							</button>
-							<button
-								className='w-full mt-2 h-10 rounded flex justify-center items-center bg-gradient-to-br from-red-500 text-white to-rose-400'
-								type='button'
-								onClick={handleClose}>
-								Cancel
-							</button>
 						</div>
+						<button
+							className=' absolute top-2 text-slate-400 right-2'
+							type='button'
+							onClick={handleClose}>
+							<IoClose />
+						</button>
 					</form>
 				</motion.div>
 			)}
