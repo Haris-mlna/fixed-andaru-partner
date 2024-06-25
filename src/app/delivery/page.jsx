@@ -13,9 +13,11 @@ import { useDeliveryDetail } from "../../context/delivery-detail/delivery-detail
 import { useRouter } from "next/navigation";
 import TableDelivery from "../../components/ui/table/table-delivery";
 import { CircularProgress } from "@mui/material";
+import moment from "moment";
+import styles from "./page.module.css";
 
 const Delivery = () => {
-	const { setDetail, setDetailList } = useDeliveryDetail();
+	const { setDetail, setDetailList, detail } = useDeliveryDetail();
 	const router = useRouter();
 
 	const [list, setList] = React.useState([]);
@@ -108,21 +110,54 @@ const Delivery = () => {
 						</h2>
 						<FaTruckFast size={20} color='#3b82f6' />
 					</nav>
+					{selectedDetail && (
+						<div className=''>
+							<div className={styles.parent}>
+								<div className={styles.card}>
+									<div className={styles.content_box}>
+										<div>
+											<span className={styles.card_title}>
+												{detail.OrderNumber}
+											</span>
+											<p className='text-sm text-white'>
+												{detail.CustomerLabel}
+											</p>
+										</div>
+										<p className={styles.card_content}>
+											{detail.CustomerAddress}
+										</p>
+										<span
+											className={`${styles.see_more}`}
+											onClick={handleOpenDetail}>
+											Lihat Detail
+										</span>
+									</div>
+									<div className={styles.datebox}>
+										<p className='absolute text-sm text-white bottom-0 -left-16'>Estimasi : </p>
+										<span className={styles.month}>
+											{moment(detail.DueDate).format("MMM").toUpperCase()}
+										</span>
+										<span className={styles.date}>
+											{moment(detail.DueDate).format("DD")}
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
 					<div
-						className='w-full flex justify-center items-center'
+						className='w-full bg-white flex justify-center items-center'
 						style={{
-							height: 350,
+							height: 200,
 						}}>
 						{selectedDetail ? (
 							<>
 								<div className='w-full h-full flex justify-center items-center relative'>
 									<ProgressBar selectedDetail={selectedDetail} />
-									<button
-										onClick={handleOpenDetail}
-										className='absolute bottom-2 right-2 bg-white p-2 px-4 rounded-full text-sm text-blue-500 flex items-center gap-1 hover:translate-x-1 transition-all duration-150'>
+									{/* <button className='absolute bottom-2 right-2 bg-white p-2 px-4 rounded-full text-sm text-blue-500 flex items-center gap-1 hover:translate-x-1 transition-all duration-150'>
 										Detail pengiriman
 										<FaAnglesRight className='mt-1' />
-									</button>
+									</button> */}
 								</div>
 							</>
 						) : (
@@ -133,6 +168,7 @@ const Delivery = () => {
 							</div>
 						)}
 					</div>
+
 					<div className='w-full bg-white'>
 						{/*   */}
 						{loading ? (
@@ -159,89 +195,3 @@ const Delivery = () => {
 };
 
 export default Delivery;
-
-// OLD DETAIL
-
-{
-	/* <div className='w-full flex-1 flex'>
-						CONTENT HERE
-</div> */
-}
-// {selectedItem ? (
-// 	<div className='w-full overflow-y-auto'>
-// 		<div className='flex justify-between w-full items-center h-12'>
-// 			<h4 className='text-blue-500'>
-// 				{selectedItem?.CustomerLabel}
-// 			</h4>
-// 			<p className=''>{selectedItem?.OrderNumber}</p>
-// 		</div>
-// 		<p className='text-sm'>
-// 			Alamat : {selectedItem?.CustomerAddress}
-// 		</p>
-// 		<p className='text-sm'>
-// 			Estimasi paling lambat :{" "}
-// 			{selectedItem?.DueDate
-// 				? moment(selectedItem.DueDate).format("ll")
-// 				: null}
-// 		</p>
-// 		<p className='text-sm'>
-// 			Status : {selectedItem?.Status}
-// 		</p>
-// 		<p className='text-sm'>
-// 			Notes pengiriman :{" "}
-// 			{selectedItem?.ClosingNotes
-// 				? selectedItem.ClosingNotes
-// 				: "-"}
-// 		</p>
-// 		<p className='text-sm'>
-// 			Total item : {selectedItem?.NumberOfItems}
-// 		</p>
-
-// 		<div>
-// 			<h3 className='w-full border-b-2 mt-3'>
-// 				List item
-// 			</h3>
-// 			{itemDetail.length > 0 && (
-// 				<div className='pb-20'>
-// 					{itemDetail.map((item, index) => (
-// 						<div key={index} className='border-y-2  my-2'>
-// 							<p className='text-xs font-bold'>
-// 								Deskripsi barang :
-// 							</p>
-// 							<p className='text-sm'>
-// 								{item.ItemDescription}
-// 							</p>
-
-// 							<div>
-// 								<p className='text-xs font-bold mt-2'>
-// 									Kuantitas barang :
-// 								</p>
-// 								{item?.UnitOfMeasurement1 && (
-// 									<p className='text-sm'>
-// 										{item.Quantity1} {" "}
-// 										<span className='text-xs'>per</span>{" "}
-// 										{item.UnitOfMeasurement1}
-// 									</p>
-// 								)}
-// 								{item?.UnitOfMeasurement2 && (
-// 									<p className='text-sm'>
-// 										{item.Quantity2} {" "}
-// 										<span className='text-xs'>per</span>{" "}
-// 										{item.UnitOfMeasurement2}
-// 									</p>
-// 								)}
-// 								{item?.UnitOfMeasurement3 && (
-// 									<p className='text-sm'>
-// 										{item.Quantity3} {" "}
-// 										<span className='text-xs'>per</span>{" "}
-// 										{item.UnitOfMeasurement3}
-// 									</p>
-// 								)}
-// 							</div>
-// 						</div>
-// 					))}
-// 				</div>
-// 			)}
-// 		</div>
-// 	</div>
-// ) : null}

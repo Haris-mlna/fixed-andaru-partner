@@ -76,3 +76,7 @@ body {
 	background-color:	var(--color-blue);
 	border-radius: 4px;
 }
+
+.MuiStepLabel-labelContainer span {
+	font-family: var(--font-outfit);
+}

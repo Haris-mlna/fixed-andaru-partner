@@ -24,9 +24,15 @@ export default function TableDelivery(props) {
 				<div>{params.value ? moment(params.value).format("ll") : ""}</div>
 			),
 		},
-		{ field: "CustomerAddress", headerName: "Alamat", flex: 2 },
+		{ field: "CustomerAddress", headerName: "Alamat", flex: 3 },
 		{ field: "Status", headerName: "Status", flex: 1 },
-		{ field: "NumberOfItems", headerName: "Barang", flex: 1 },
+		{
+			field: "NumberOfItems",
+			headerName: "Barang",
+			flex: 1,
+			align: "right",
+			type: 'number',
+		},
 	];
 
 	const handleSelectionChange = newRowSelectionModel => {
