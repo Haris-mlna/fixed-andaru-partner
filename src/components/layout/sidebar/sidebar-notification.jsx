@@ -132,7 +132,7 @@ const SidebarNotification = () => {
 						) : (
 							<div className='w-full h-full flex flex-col justify-center items-center text-slate-400'>
 								<HiOutlineMailOpen size={32} />
-								<p className='text-sm '>Your Notification is Empty</p>
+								<p className='text-sm '>Anda tidak memiliki notifikasi</p>
 							</div>
 						)}
 					</>

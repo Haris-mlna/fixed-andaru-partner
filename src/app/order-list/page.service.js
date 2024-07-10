@@ -11,16 +11,16 @@ export const getListorder = async id => {
 				operator: "=",
 				value: id,
 			},
-			{
-				propertyName: "Status",
-				operator: "!=",
-				value: "Pending",
-			},
-			{
-				propertyName: "Status",
-				operator: "=",
-				value: "CheckedOut",
-			},
+			// {
+			// 	propertyName: "Status",
+			// 	operator: "!=",
+			// 	value: "Pending",
+			// },
+			// {
+			// 	propertyName: "Status",
+			// 	operator: "=",
+			// 	value: "CheckedOut",
+			// },
 		],
 	};
 

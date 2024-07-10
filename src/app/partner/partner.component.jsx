@@ -137,6 +137,9 @@ const PartnerComponents = () => {
 						type='text'
 						className='flex-1 p-2 outline-none text-sm'
 						placeholder='Cari patner anda...'
+						onChange={(e) => {
+							setSearchUser(e.target.value)
+						}}
 					/>
 				</div>
 			</div>
