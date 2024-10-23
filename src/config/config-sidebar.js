@@ -77,5 +77,11 @@ export const configsidebar = {
 			variant: "solid",
 			link: "/settings",
 		},
+		{
+			name: "Tambah Produk",
+			icons: faShoppingBasket,
+			variant: "solid",
+			link: "/add-product",
+		},
 	],
 };
