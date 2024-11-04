@@ -37,8 +37,12 @@ const AddProductPages = () => {
     // Append the selected file directly
     formData.append("file", binaryData);
 
+    const apiUser = window.localStorage.getItem("apiURL");
+
+    const url = apiUser + "/importdata";
+
     try {
-      const response = await fetch("http://103.195.30.148:81/api/main/importdata", {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`, // Keep the Authorization header

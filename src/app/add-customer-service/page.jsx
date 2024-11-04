@@ -72,7 +72,7 @@ const AddCustomerServices = () => {
           <div className="w-full h-screen flex justify-center items-center">
             <div className="w-[800px] h-[400px] bg-white shadow rounded p-4">
               <h1 className="font-outfit font-medium uppercase tracking-[2px]">
-                Tambah CS
+                Tambah Customer Services
               </h1>
               <div className="py-4">
                 <input
