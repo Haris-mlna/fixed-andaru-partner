@@ -51,24 +51,24 @@ export const configsidebar = {
 			variant: "normal",
 			link: "/partner",
 		},
-		{
-			name: "Keranjang Anda",
-			icons: faShoppingBasket,
-			variant: "normal",
-			link: "/cart",
-		},
-		{
-			name: "Manage Akun",
-			icons: faPeopleRoof,
-			variant: "normal",
-			link: "/manage",
-		},
-		{
-			name: "Promo",
-			icons: faPercent,
-			variant: "normal",
-			link: "/promo",
-		},
+		// {
+		// 	name: "Keranjang Anda",
+		// 	icons: faShoppingBasket,
+		// 	variant: "normal",
+		// 	link: "/cart",
+		// },
+		// {
+		// 	name: "Manage Akun",
+		// 	icons: faPeopleRoof,
+		// 	variant: "normal",
+		// 	link: "/manage",
+		// },
+		// {
+		// 	name: "Promo",
+		// 	icons: faPercent,
+		// 	variant: "normal",
+		// 	link: "/promo",
+		// },
 	],
 	settings: [
 		{
@@ -82,6 +82,12 @@ export const configsidebar = {
 			icons: faShoppingBasket,
 			variant: "solid",
 			link: "/add-product",
+		},
+		{
+			name: "Tambah Customer Service",
+			icons: faPeopleRoof,
+			variant: "solid",
+			link: "/add-customer-service",
 		},
 	],
 };
